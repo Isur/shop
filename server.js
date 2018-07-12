@@ -1,15 +1,23 @@
-const express = require('express');
-// const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-// const path = require('path');
+  // Setup an Express app
+  const express = require('express');
+  const bodyParser = require('body-parser');
+  const path = require('path');
+  const mongoose = require('mongoose');
+  const app = express();
+  app.use(bodyParser.json());
 
-const documents = require('./routes/document');  
+  const db = require('./config/keys').mongoURL;
+  mongoose.connect(db)
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log(err));
+  
+  // routes:
+  const search = require('./routes/api/productSearch');
+  const operations = require('./routes/api/productOperations');
+  // routes:
+  app.use('/search', search);  
+  app.use('/', operations);
 
-const app = express();
-app.use(bodyParser.json());
-
-
-app.use('/document', documents);
 
 // // Serve static assets if in production
 // if(process.env.NODE_ENV == 'production'){
@@ -20,35 +28,6 @@ app.use('/document', documents);
 //         res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
 //     });
 // }
-
-const elastic = require('./elasticsearch');  
-elastic.indexExists().then(function (exists) {  
-    console.log("test");
-  if (exists) {
-    return elastic.deleteIndex();
-  }
-}).then(function () {
-  return elastic.initIndex().then(elastic.initMapping).then(function () {
-    //Add a few titles for the autocomplete
-    //elasticsearch offers a bulk functionality as well, but this is for a different time
-    const promises = [
-      'Thing Explainer',
-      'The Internet Is a Playground',
-      'The Pragmatic Programmer',
-      'The Hitchhikers Guide to the Galaxy',
-      'Trial of the Clone'
-    ].map(function (bookTitle) {
-      return elastic.addDocument({
-        title: bookTitle,
-        content: bookTitle + " content",
-        metadata: {
-          titleLength: bookTitle.length
-        }
-      });
-    });
-    return Promise.all(promises);
-  });
-});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));

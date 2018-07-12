@@ -26,6 +26,9 @@
     "elasticsearch": "^15.1.1",
     "express": "^4.16.3",
     "express-generator": "^4.16.0",
-    "nodemon": "^1.18.1"
+    "mongoosastic": "^4.4.1",
+    "mongoose": "^5.2.3",
+    "nodemon": "^1.18.1",
+    "schema-object": "^4.0.11"
   }
 }
