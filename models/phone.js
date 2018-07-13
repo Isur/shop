@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const Phone = new Schema({
     name:{
         type: String,
-        required: true
+        required: true,
+        es_indexed: true
     },
     description:{
         type: String,
@@ -17,7 +18,7 @@ const Phone = new Schema({
     },
     producer: {
         type: String,
-        required: true
+        required: true,
     },
     type: {
         type: String,
@@ -25,6 +26,6 @@ const Phone = new Schema({
     }
 });
 
-Phone.plugin(mongoosastic,{hosts:["172.17.0.2:9200"]});
+Phone.plugin(mongoosastic,{hosts:["172.18.0.2:9200"]});
 
 module.exports = Item = mongoose.model('phone', Phone);

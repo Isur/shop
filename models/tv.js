@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const TV = new Schema({
     name:{
         type: String,
-        required: true
+        required: true,
+        es_indexed: true
     },
     description:{
         type: String,
@@ -17,7 +18,8 @@ const TV = new Schema({
     },
     producer: {
         type: String,
-        required: true
+        required: true,
+        es_indexed: true
     },
     type: {
         type: String,
@@ -25,6 +27,6 @@ const TV = new Schema({
     }
 });
 
-TV.plugin(mongoosastic,{hosts:["172.17.0.2:9200"]});
+TV.plugin(mongoosastic,{hosts:["172.18.0.2:9200"]});
 
 module.exports = Item = mongoose.model('tv', TV);

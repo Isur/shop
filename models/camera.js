@@ -25,6 +25,6 @@ const Camera = new Schema({
     }
 });
 
-Camera.plugin(mongoosastic,{hosts:["172.17.0.2:9200"]});
+Camera.plugin(mongoosastic,{hosts:["172.18.0.2:9200"]});
 
 module.exports = Item = mongoose.model('camera', Camera);
