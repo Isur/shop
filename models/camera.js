@@ -18,6 +18,10 @@ const Camera = new Schema({
     producer: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: true
     }
 });
 

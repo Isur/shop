@@ -18,9 +18,13 @@ const TV = new Schema({
     producer: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: true
     }
 });
 
-TV.plugin(mongoosastic);
+TV.plugin(mongoosastic,{hosts:["172.17.0.2:9200"]});
 
 module.exports = Item = mongoose.model('tv', TV);

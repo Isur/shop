@@ -18,9 +18,13 @@ const Computer = new Schema({
     producer: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: true
     }
 });
 
-Computer.plugin(mongoosastic);
+Computer.plugin(mongoosastic,{hosts:["172.17.0.2:9200"]});
 
 module.exports = Item = mongoose.model('computer', Computer);
