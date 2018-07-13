@@ -9,7 +9,7 @@ const Computer = require('../../models/computer');
 
 // GET ALL
 router.get('/', (req,res) => {
-    
+
 });
 
 // GET 
