@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Items from './Components/Items';
+import Menu from './Components/Menu';
 
 import axios from 'axios';
 
@@ -29,14 +30,31 @@ class App extends Component {
     });
     }
 
+  selectCategory = (category) =>{
+    this.setState({
+      loaded: false
+    });
+    axios.get(`/products/${category}`).then((res) => {
+      this.setState({ 
+          items: res.data 
+       });
+   }).then(() => {
+     this.setState({
+       loaded: true
+     });
+ 
+   });
+  }
+
   render() {
     return (
 
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to Shop</h1>
         </header>
+        <Menu selectCategory={this.selectCategory}/>
         {this.state.loaded===true &&
         <Items items={this.state.items}/>
         }
