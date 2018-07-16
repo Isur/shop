@@ -8,6 +8,10 @@ const Computer = new Schema({
         required: true,
         es_indexed: true
     },
+    RAM:{
+        type: Number,
+        required: true
+    },
     description:{
         type: String,
         required: true

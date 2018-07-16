@@ -8,6 +8,10 @@ const TV = new Schema({
         required: true,
         es_indexed: true
     },
+    diagonal: {
+        type: Number,
+        required: true,
+    },
     description:{
         type: String,
         required: true
@@ -19,7 +23,6 @@ const TV = new Schema({
     producer: {
         type: String,
         required: true,
-        es_indexed: true
     },
     type: {
         type: String,

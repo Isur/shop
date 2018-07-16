@@ -5,7 +5,12 @@ const Schema = mongoose.Schema;
 const Camera = new Schema({
     name:{
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
+    },
+    resolution:{
+        type: Number,
+        required: true,
     },
     description:{
         type: String,
@@ -17,7 +22,7 @@ const Camera = new Schema({
     },
     producer: {
         type: String,
-        required: true
+        required: true,
     },
     type: {
         type: String,
