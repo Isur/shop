@@ -8,7 +8,7 @@ const Phone = new Schema({
         required: true,
         es_indexed: true
     },
-    ROM:{
+    rom:{
         type: Number,
         requiered: true,
     },

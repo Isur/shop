@@ -34,7 +34,7 @@ router.post('/addTV', (req,res)=>{
 router.post('/addPhone', (req,res)=>{
     const newItem = new Phone({
         name:           req.body.name,
-        ROM:            req.body.rom,
+        rom:            req.body.rom,
         description:    req.body.description,
         value:          req.body.value,
         producer:       req.body.producer,
@@ -46,7 +46,7 @@ router.post('/addPhone', (req,res)=>{
 router.post('/addComputer', (req,res)=>{
     const newItem = new Computer({
         name:           req.body.name,
-        RAM:            req.body.ram,
+        ram:            req.body.ram,
         description:    req.body.description,
         value:          req.body.value,
         producer:       req.body.producer,
@@ -65,6 +65,18 @@ router.delete('/delete/:id', (req,res) => {
                     item[i].remove().then(() => res.json({success:true})).catch(err =>res.status(404).json({success: false}));
             }
         });
-});
+    });
+// DELETE ALL - temporary method
+    router.delete('/deleteAll', (req,res) =>{
+        Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
+            val => { 
+                console.log(val);
+                const products = val[0].concat(val[1], val[2], val[3]);
+                for(let i = 0; i < products.length; i++){
+                    products[i].remove();
+                }
+            }
+        ).then(res.json({success:true}));
+    });
 
 module.exports = router;

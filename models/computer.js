@@ -8,7 +8,7 @@ const Computer = new Schema({
         required: true,
         es_indexed: true
     },
-    RAM:{
+    ram:{
         type: Number,
         required: true
     },
