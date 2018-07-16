@@ -5,45 +5,55 @@ import Menu from './Components/Menu';
 import axios from 'axios';
 
 import fillDatabase from './db/db';
-
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
   state = {
-    loaded:false
+    page: 1,
+    loaded:false,
+    category: '',
+    items: []
   }
 
   componentDidMount(){
-    axios.get('/products/').then((res) => {
-       this.setState({ 
-           items: res.data 
-        });
-    }).then(() => {
-      if(this.state.items.length === 0){
-        fillDatabase(20).then(this.setState({loaded:true}));
-      }else{
+    this.getItems();
+  }
+
+    nextPage = () =>{
       this.setState({
-        loaded: true
-      })};
-  
-    });
+        page: this.state.page +1
+      })
+      this.getItems();
     }
 
-  selectCategory = (category) =>{
+    previousPage = () =>{
+      this.setState({
+        page: this.state.page -1
+      })
+      this.getItems();
+    }
+  selectCategory = (cat) =>{
     this.setState({
-      loaded: false
+      category: cat
     });
-    axios.get(`/products/${category}`).then((res) => {
-      this.setState({ 
-          items: res.data 
-       });
-   }).then(() => {
-     this.setState({
-       loaded: true
-     });
- 
-   });
+    
+    this.getItems();
+    
+  }
+
+  getItems = () =>{
+    this.setState({
+      loaded: false,
+    });
+
+    axios.get(`/products/${this.state.category}/${this.state.page}`)
+      .then((res) => {
+        this.setState({ 
+          items: res.data,
+          loaded: true
+        });
+      });       
   }
 
   render() {
@@ -54,10 +64,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Shop</h1>
         </header>
-        <Menu selectCategory={this.selectCategory}/>
+        <Menu selectCategory={this.selectCategory}
+        previousPage={this.previousPage}
+        nextPage={this.nextPage}/>
         {this.state.loaded===true &&
         <Items items={this.state.items}/>
         }
+
+
       </div>
 
     );

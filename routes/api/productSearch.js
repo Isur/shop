@@ -7,8 +7,9 @@ const TV = require('../../models/tv');
 const Phone = require('../../models/phone');
 const Computer = require('../../models/computer');
 
+const perPage = 5;
 // GET ALL
-router.get('/', (req,res) => {
+router.get('/:page', (req,res) => {
     Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
     val => { 
         console.log(val);
@@ -19,24 +20,40 @@ router.get('/', (req,res) => {
 
 // GET 
 
-router.get('/cameras/',(req, res)=>{
+router.get('/cameras/:page',(req, res)=>{
+    
+    const page = req.params.page;
     Camera.find()
+        .limit(perPage)
+        .skip((perPage * page) -perPage)
         .sort()
         .then(camera => res.json(camera));
 })
-router.get('/tvs/',(req, res)=>{
+router.get('/tvs/:page',(req, res)=>{
+    
+    const page = req.params.page;
     TV.find()
+        .limit(perPage)
+        .skip((perPage * page) -perPage)
         .sort()
         .then(tv => res.json(tv));
 })
 
-router.get('/computers/',(req, res)=>{
+router.get('/computers/:page',(req, res)=>{
+    
+    const page = req.params.page;
     Computer.find()
+        .limit(perPage)
+        .skip((perPage * page) -perPage)
         .sort()
         .then(computer => res.json(computer));
 })
-router.get('/phones/',(req, res)=>{
+router.get('/phones/:page',(req, res)=>{
+    
+    const page = req.params.page;
     Phone.find()
+        .limit(perPage)
+        .skip((perPage * page) -perPage)
         .sort()
         .then(phone => res.json(phone));
 })

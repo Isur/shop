@@ -1,9 +1,16 @@
 import React from 'react';
-
 const MenuItem = (props) => {
     return(
         <button onClick={() => props.selectCategory(props.cat)}> 
             { props.CategoryName }
+        </button>
+    );
+}
+
+const ChangePage = (props) =>{
+    return(
+        <button onClick={props.changePage}>
+            {props.symbol}
         </button>
     );
 }
@@ -15,7 +22,10 @@ const Menu = (props) => {
             <MenuItem cat="cameras" CategoryName="Kamery" selectCategory={props.selectCategory} />            
             <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
             <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
-            <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} />            
+            <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} /> 
+            <ChangePage changePage={props.previousPage} symbol="<--"/>
+            <ChangePage changePage={props.nextPage} symbol="-->"/>
+
         </div>
     )
 }
