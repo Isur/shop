@@ -9,7 +9,12 @@ const Computer = require('../../models/computer');
 
 // GET ALL
 router.get('/', (req,res) => {
-
+    Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
+    val => { 
+        console.log(val);
+        const products = Object.assign({},val[0], val[1], val[2], val[3]);
+        res.json(products); 
+    }).catch(err => res.json({success: false}));
 });
 
 // GET 
