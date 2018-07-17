@@ -14,7 +14,8 @@ router.get('/:page', (req,res) => {
     Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
     val => { 
         const products = val[0].concat(val[1], val[2], val[3]);
-        res.json(products.slice(perPage*page - perPage,perPage*page));
+        const pages = Math.ceil(products.length/perPage);
+        res.json({items: products.slice(perPage*page - perPage,perPage*page), pages: pages});
     }).catch(err => res.json({success: false}));
 });
 
@@ -23,39 +24,29 @@ router.get('/:page', (req,res) => {
 router.get('/cameras/:page',(req, res)=>{
     
     const page = req.params.page;
-    Camera.find()
-        .limit(perPage)
-        .skip((perPage * page) -perPage)
-        .sort()
-        .then(camera => res.json(camera));
+    // Camera.find()
+    //     .limit(perPage)
+    //     .skip((perPage * page) -perPage)
+    //     .sort()
+    //     .then(camera => {
+    //         res.json({items: camera})});
+    Camera.paginate({}, {page: page, limit: perPage}).then(camera => res.json({items: camera.docs, pages: camera.pages}));
 })
 router.get('/tvs/:page',(req, res)=>{
     
     const page = req.params.page;
-    TV.find()
-        .limit(perPage)
-        .skip((perPage * page) -perPage)
-        .sort()
-        .then(tv => res.json(tv));
+    TV.paginate({}, {page: page, limit: perPage}).then(tv => res.json({items: tv.docs, pages: tv.pages}));
 })
 
 router.get('/computers/:page',(req, res)=>{
     
     const page = req.params.page;
-    Computer.find()
-        .limit(perPage)
-        .skip((perPage * page) -perPage)
-        .sort()
-        .then(computer => res.json(computer));
+    Computer.paginate({}, {page: page, limit: perPage}).then(computer => res.json({items: computer.docs, pages: computer.pages}));
 })
 router.get('/phones/:page',(req, res)=>{
     
     const page = req.params.page;
-    Phone.find()
-        .limit(perPage)
-        .skip((perPage * page) -perPage)
-        .sort()
-        .then(phone => res.json(phone));
+    Phone.paginate({}, {page: page, limit: perPage}).then(phone => res.json({items: phone.docs, pages: phone.pages}));
 })
 
 module.exports = router;

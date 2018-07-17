@@ -23,7 +23,10 @@ const Menu = (props) => {
             <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
             <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
             <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} /> 
+            <br />
+            <hr /> 
             <ChangePage changePage={props.previousPage} symbol="<--"/>
+            &nbsp; {props.page} &nbsp;
             <ChangePage changePage={props.nextPage} symbol="-->"/>
 
         </div>
