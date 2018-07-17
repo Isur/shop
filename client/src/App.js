@@ -3,57 +3,70 @@ import Items from './Components/Items';
 import Menu from './Components/Menu';
 
 import axios from 'axios';
+import createHistory from "history/createBrowserHistory";
 
-import fillDatabase from './db/db';
+
 import logo from './logo.svg';
 import './App.css';
+const history = createHistory();
+const location = history.location;
 
 class App extends Component {
-  state = {
-    page: 1,
-    loaded:false,
-    category: '',
-    items: []
+  constructor(props){
+    super(props);
+    this.state = {
+      page: location.pathname.split('/')[3],
+      loaded:false,
+      category: location.pathname.split('/')[2],
+      items: [],
+      pages: Number
+    };
+    console.log(location.pathname.split('/')[2]);
   }
 
   componentDidMount(){
-    this.getItems();
+    this.setState({
+      category: location.pathname.split('/')[2] || '',
+      page: location.pathname.split('/')[3] || 1
+    }, async () => {
+      this.getItems(this.state.category, this.state.page);
+    })
+
   }
 
     nextPage = () =>{
-      this.setState({
-        page: this.state.page +1
-      })
-      this.getItems();
+      if(this.state.items.length !== 0)
+        this.getItems(this.state.category, this.state.page + 1);
     }
 
     previousPage = () =>{
-      this.setState({
-        page: this.state.page -1
-      })
-      this.getItems();
+      if(this.state.page === 1)
+        return;
+      this.getItems(this.state.category, this.state.page - 1);
     }
   selectCategory = (cat) =>{
-    this.setState({
-      category: cat
-    });
-    
-    this.getItems();
+      this.getItems(cat,1);
+
     
   }
 
-  getItems = () =>{
+  getItems = (cat,page) =>{
     this.setState({
       loaded: false,
-    });
-
-    axios.get(`/products/${this.state.category}/${this.state.page}`)
+      category: cat,
+      page: page
+    }, async () => {
+      axios.get(`/products/${this.state.category}/${this.state.page}`)
       .then((res) => {
         this.setState({ 
           items: res.data,
           loaded: true
         });
-      });       
+        history.push(`/products/${this.state.category}/${this.state.page}`);
+      }).catch(err =>{ console.log(err);
+        this.setState({items: [], loaded: true})
+      });   
+    });
   }
 
   render() {
@@ -68,8 +81,7 @@ class App extends Component {
         previousPage={this.previousPage}
         nextPage={this.nextPage}/>
         {this.state.loaded===true &&
-        <Items items={this.state.items}/>
-        }
+        <Items items={this.state.items}/> }
 
 
       </div>

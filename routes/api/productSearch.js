@@ -10,11 +10,11 @@ const Computer = require('../../models/computer');
 const perPage = 5;
 // GET ALL
 router.get('/:page', (req,res) => {
+    const page = req.params.page;
     Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
     val => { 
-        console.log(val);
         const products = val[0].concat(val[1], val[2], val[3]);
-        res.json(products); 
+        res.json(products.slice(perPage*page - perPage,perPage*page));
     }).catch(err => res.json({success: false}));
 });
 
