@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // Components
 import Items from './Components/Items';
 import Menu from './Components/Menu';
+import Header from './Components/Header';
 // utilities
 import axios from 'axios';
 import createHistory from "history/createBrowserHistory";
@@ -21,7 +22,8 @@ class App extends Component {
       loaded:false,
       category: '',
       items: [],
-      pages: 1
+      pages: 1,
+      search: null
     };
   }
 
@@ -34,7 +36,17 @@ class App extends Component {
     })
 
   }
+    search = (event) => {
+      this.setState({
+        search: event.target.value
+      }, async () =>{
+        this.getSearchItems(this.state.category, this.state.search);
+      })
+    }
 
+    selectPage = (page) => {
+      this.getItems(this.state.category, page);
+    }
     nextPage = () =>{
       if(this.state.page < this.state.pages)
         this.getItems(this.state.category, this.state.page + 1);
@@ -73,6 +85,22 @@ class App extends Component {
     });
   }
 
+  getSearchItems = (cat, query) =>{
+    this.setState({
+      loaded:false,
+      category: cat
+    }, async () => {
+      axios.get(`/products/${this.state.category}/search/${query}`)
+    }, (err, res) => {
+      console.log(`res: ${res}`);
+      console.log(`err: ${err}`);
+      this.setState({
+        items: res.data,
+        loaded: true,
+      })
+    })
+  }
+
   render() {
     return (
 
@@ -81,11 +109,15 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Shop</h1>
         </header>
+        <Header 
+          search={this.search}/>
         <Menu 
           selectCategory={this.selectCategory}
           previousPage={this.previousPage}
           nextPage={this.nextPage}
           page={this.state.page}
+          maxPages={this.state.pages}
+          selectPage={this.selectPage}
         />
         {this.state.loaded===true &&
         <Items items={this.state.items}/> }
