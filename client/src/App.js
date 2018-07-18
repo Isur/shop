@@ -86,21 +86,25 @@ class App extends Component {
   }
 
   getSearchItems = (cat, query) =>{
+    console.log(query);
     this.setState({
       loaded:false,
       category: cat
     }, async () => {
-      axios.get(`/products/${this.state.category}/search/${query}`)
-    }, (err, res) => {
-      console.log(`res: ${res}`);
-      console.log(`err: ${err}`);
-      this.setState({
-        items: res.data,
-        loaded: true,
-      })
+      const q = `/products/${this.state.category}/search/${query}`;
+      console.log(q);
+      axios.get(q).then((res) => {
+        console.log(res.data);
+        this.setState({
+          items: res.data,
+          loaded: true
+        })
+      });
     })
   }
 
+    
+  
   render() {
     return (
 

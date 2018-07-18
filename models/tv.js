@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const mongoosastic = require('mongoosastic');
 const Schema = mongoose.Schema;
-
+const host = require('../config/keys').elastic;
 
 const TV = new Schema({
     name:{
@@ -32,7 +32,7 @@ const TV = new Schema({
     }
 });
 
-TV.plugin(mongoosastic,{hosts:["172.18.0.2:9200"]});
+TV.plugin(mongoosastic,{hosts:[host]});
 TV.plugin(mongoosePaginate);
 
 

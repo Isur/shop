@@ -8,7 +8,7 @@ const Phone = require('../../models/phone');
 const Computer = require('../../models/computer');
 
 const perPage = 5;
-// GET ALL
+// GET ALL FROM ALL CATEGORIES
 router.get('/:page', (req,res) => {
     const page = req.params.page;
     Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
@@ -19,17 +19,11 @@ router.get('/:page', (req,res) => {
     }).catch(err => res.json({success: false}));
 });
 
-// GET 
+// GET ALL FROM CATEGORY
 
 router.get('/cameras/:page',(req, res)=>{
     
     const page = req.params.page;
-    // Camera.find()
-    //     .limit(perPage)
-    //     .skip((perPage * page) -perPage)
-    //     .sort()
-    //     .then(camera => {
-    //         res.json({items: camera})});
     Camera.paginate({}, {page: page, limit: perPage}).then(camera => res.json({items: camera.docs, pages: camera.pages}));
 })
 router.get('/tvs/:page',(req, res)=>{
@@ -47,6 +41,28 @@ router.get('/phones/:page',(req, res)=>{
     
     const page = req.params.page;
     Phone.paginate({}, {page: page, limit: perPage}).then(phone => res.json({items: phone.docs, pages: phone.pages}));
+})
+
+router.get('/cameras/search/all',(req,res)=>{
+        console.log(`szukajka wszystkich kamer`);
+        Camera.search({
+                match_all: {}
+        },(err, result)=>{
+            console.log(err);
+            res.json({error: err, result: result})});
+});
+
+router.get('/cameras/search/:name', (req,res)=>{
+    Camera.search({
+            match:{
+                name: {
+                    query: req.params.name,
+                    fuzziness: 2
+                } 
+            }
+    },(err,result)=>{
+        console.log(`error: ${err}`);
+        res.json(result.hits.hits)});
 })
 
 module.exports = router;

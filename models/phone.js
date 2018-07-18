@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const mongoosastic = require('mongoosastic');
 const Schema = mongoose.Schema;
-
+const host = require('../config/keys').elastic;
 
 const Phone = new Schema({
     name:{
@@ -32,7 +32,7 @@ const Phone = new Schema({
     }
 });
 
-Phone.plugin(mongoosastic,{hosts:["172.18.0.2:9200"]});
+Phone.plugin(mongoosastic,{hosts:[host]});
 Phone.plugin(mongoosePaginate);
 
 module.exports = Item = mongoose.model('phone', Phone);
