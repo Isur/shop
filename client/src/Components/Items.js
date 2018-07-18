@@ -15,7 +15,7 @@ const Items = (props) => {
     console.log(props.items);
 return(
             <div>
-                {props.items.length > 0 && props.items.map(({name,producer,value,description, _id, diagonal, resolution,ram,rom,type}) => (
+                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id, diagonal, resolution,ram,rom,type}) => (
                     <Item 
                         name={name} 
                         producer={producer} 
@@ -29,7 +29,7 @@ return(
                         type={type}
                         />
                 ))}
-                {props.items.length === 0 && <p> Na tej stronie nie ma produktów.</p>}
+                {(!props.items || props.items.length === 0) && <p> Na tej stronie nie ma produktów.</p>}
             </div>
         );
     }

@@ -13,22 +13,27 @@ const Phone = new Schema({
     rom:{
         type: Number,
         requiered: true,
+        es_indexed: true,
     },
     description:{
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     value:{
         type: Number,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     producer: {
         type: String,
         required: true,
+        es_indexed: true,
     },
     type: {
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
     }
 });
 

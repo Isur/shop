@@ -12,23 +12,28 @@ const Computer = new Schema({
     },
     ram:{
         type: Number,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     description:{
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     value:{
         type: Number,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     producer: {
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
     },
     type: {
         type: String,
-        required: true
+        required: true,
+        es_indexed: true,
     }
 });
 

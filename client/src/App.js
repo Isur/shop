@@ -94,9 +94,14 @@ class App extends Component {
       const q = `/products/${this.state.category}/search/${query}`;
       console.log(q);
       axios.get(q).then((res) => {
-        console.log(res.data);
-        this.setState({
-          items: res.data,
+        console.log(res);
+        var result = [];
+        if(res.data[0]){
+          result = res.data.map(a => a._source);
+        }else {result = res.data.items}
+        console.log(result);
+          this.setState({
+          items: result,
           loaded: true
         })
       });
