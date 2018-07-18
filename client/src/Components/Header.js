@@ -1,10 +1,10 @@
 import React from 'react';
-
+import { Input, Segment } from 'semantic-ui-react';
 const SearchBar = (props) =>{
     return(
-        <form>
-            <input type="text" placeholder="Szukaj..." onChange={props.onChange}/>
-        </form>
+<Segment inverted>
+    <Input inverted placeholder='Szukaj...' onChange={props.onChange}/>
+  </Segment>            
     );
 }
 

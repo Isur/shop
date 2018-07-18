@@ -8,7 +8,6 @@ import Header from './Components/Header';
 import axios from 'axios';
 import createHistory from "history/createBrowserHistory";
 // images, css
-import logo from './logo.svg';
 import './App.css';
 // History 
 const history = createHistory();
@@ -71,7 +70,7 @@ class App extends Component {
       category: cat,
       page: page
     }, async () => {
-      axios.get(`/products/${this.state.category}/${this.state.page}`)
+      axios.get(`/products/all/${this.state.category}/${this.state.page}`)
       .then((res) => {
         this.setState({ 
           items: res.data.items,
@@ -91,7 +90,7 @@ class App extends Component {
       loaded:false,
       category: cat
     }, async () => {
-      const q = `/products/${this.state.category}/search/${query}`;
+      const q = `/products/search/${this.state.category}/${query}`;
       console.log(q);
       axios.get(q).then((res) => {
         console.log(res);
@@ -114,12 +113,9 @@ class App extends Component {
     return (
 
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Shop</h1>
-        </header>
-        <Header 
-          search={this.search}/>
+      {/* <Dimmer active={!this.state.loaded}>
+        <Loader>Loading</Loader>
+      </Dimmer> */}
         <Menu 
           selectCategory={this.selectCategory}
           previousPage={this.previousPage}
@@ -128,6 +124,8 @@ class App extends Component {
           maxPages={this.state.pages}
           selectPage={this.selectPage}
         />
+        <Header 
+          search={this.search}/>
         {this.state.loaded===true &&
         <Items items={this.state.items}/> }
 

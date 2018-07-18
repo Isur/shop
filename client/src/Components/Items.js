@@ -1,13 +1,18 @@
 import React from 'react';
-
+import { Message } from 'semantic-ui-react';
 
 const Item = (props) => {
     const addInfo = props.diagonal || props.resolution || props.rom || props.ram;
     return(
-        <div>
-            <p> {props.name} - {addInfo} - {props.producer} - {props.description} - {props.value} </p>
-            <hr />
-        </div>
+            <Message color="black" size="large">
+    <Message.Header> {props.name} </Message.Header>
+    <Message.List>
+        <Message.Item> {addInfo} </Message.Item>
+        <Message.Item> {props.producer} </Message.Item>
+        <Message.Item> {props.description} </Message.Item>
+        <Message.Item> ${props.value} </Message.Item>
+    </Message.List>
+  </Message>
     )
 }
 
@@ -29,7 +34,7 @@ return(
                         type={type}
                         />
                 ))}
-                {(!props.items || props.items.length === 0) && <p> Na tej stronie nie ma produktów.</p>}
+                {(!props.items || props.items.length === 0) && <Message compact> Na tej stronie nie ma produktów.</Message>}
             </div>
         );
     }

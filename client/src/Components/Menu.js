@@ -1,25 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
+import { Icon, Menu } from 'semantic-ui-react';
 const MenuItem = (props) => {
     return(
-        <button onClick={() => props.selectCategory(props.cat)}> 
+        <Menu.Item onClick={() => props.selectCategory(props.cat)}> 
             { props.CategoryName }
-        </button>
-    );
-}
-
-const ChangePage = (props) =>{
-    return(
-        <button onClick={props.changePage}>
-            {props.symbol}
-        </button>
+        </Menu.Item>
     );
 }
 
 const PageButton = (props) =>{
     if((props.page > 1 && props.page < props.pages) || props.list === 'false'){
         return(
-            <button onClick={() => props.selectPage(props.page)}> {props.page} </button>
+            <Menu.Item onClick={() => props.selectPage(props.page)}> {props.page} </Menu.Item>
         );
     }
     else{
@@ -28,42 +21,25 @@ const PageButton = (props) =>{
 
 }
 
-const PageButtons = (props) =>{
-     return(
-    <div> 
-    <ChangePage changePage={props.previousPage} symbol="<--"/>
-        <PageButton selectPage={props.selectPage}  list='false' page={1} />...
-        {_.range(props.page-2,props.page+3).map(i => <PageButton selectPage={props.selectPage} list='true' key={i} page={i} pages={props.pages} /> )}
-        ...<PageButton selectPage={props.selectPage}  list='false' page={props.pages} />
-        <ChangePage changePage={props.nextPage} symbol="-->"/>
-    </div> 
-    
+const MyMenu = (props) => {
+    return(
+<div>        
+    <Menu inverted fluid widths={5} size="massive">
+        <MenuItem cat="all" CategoryName="Wszystko" selectCategory={props.selectCategory}/>            
+        <MenuItem cat="cameras" CategoryName="Kamery" selectCategory={props.selectCategory} />            
+        <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
+        <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
+        <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} />
+    </Menu>
+    <Menu inverted fluid widths={9}>
+        <Menu.Item  onClick={props.previousPage}> <Icon name="angle double left" /> </Menu.Item>
+        <PageButton selectPage={props.selectPage}  list='false' page={1} />
+        {_.range(props.page-2,props.page+3).map(i => <PageButton selectPage={props.selectPage} list='true' key={i} page={i} pages={props.maxPages} /> )}
+        <PageButton selectPage={props.selectPage}  list='false' page={props.maxPages} />
+        <Menu.Item  onClick={props.nextPage}> <Icon name="angle double right" /> </Menu.Item>
+    </Menu>
+    </div>
     );
 }
 
-const Menu = (props) => {
-    return(
-        <div> 
-            <MenuItem cat="" CategoryName="Wszystko" selectCategory={props.selectCategory}/>            
-            <MenuItem cat="cameras" CategoryName="Kamery" selectCategory={props.selectCategory} />            
-            <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
-            <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
-            <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} /> 
-            <br />
-            <hr /> 
-            
-            &nbsp; {props.page} &nbsp;
-                <PageButtons 
-                    previousPage={props.previousPage} 
-                    nextPage={props.nextPage} 
-                    pages={props.maxPages} 
-                    page={props.page} 
-                    selectPage={props.selectPage}
-                />
-            
-            <hr /><hr />
-        </div>
-    )
-}
-
-export default Menu;
+export default MyMenu;
