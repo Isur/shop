@@ -13,55 +13,113 @@ const Phone = require('../../models/phone');
 const Computer = require('../../models/computer');
 
 const perPage = 5;
-// SEARCH
 
-router.get('/search/:cat/:name', (req,res)=>{
+router.get('/search/:cat/', (req,res)=>{
+    console.log("superSzukajka");
+    const cat = req.params.cat
+    var q = req.query.name;
+    const p = req.query.page;
+    const sort = req.query.sort;
+    
+    if(q == undefined){
+        q = '';
+    }
+    console.log(p,q,cat)
     var model;
-    switch(req.params.cat){
+    switch(cat){
         case 'cameras': 
             model = Camera;
             break;
-        case 'tvs':
+            case 'tvs':
             model = TV;
             break;
         case 'computers':
             model = Computer;
             break;
         case 'phones':
-            model = Phone;
+        model = Phone;
             break;
-        case 'all':
+            case 'all':
             model = null;            
             break;
-        default:
+            default:
             model = null;
             break;
-    }
-if(model === null){
-    client.search({
-        q: req.params.name
-    }).then(resp => {
+        }
+        if(model === null){
+            search = {body: {
+                from: p*perPage - perPage,
+                size: 5,
+                query: {
+                    match: {
+                        name: {
+                            query: `${q}`,
+                            fuzziness: 1
+                        }
+                    }
+                },
+                sort: "value"
+                
+            }}
+            
+            client.search({q: q}).then(respo => {
+                totalHits = respo.hits.total
+            
+    client.search(
+        search    
+    ).then(resp => {
+        var pages = Math.ceil(totalHits/perPage);
       if(resp.hits.hits.length < 1)
-        res.json([])
-      else res.json(resp.hits.hits);
-    }).catch(err => res.json(err));
+      res.json({items:[], pages: pages})
+      else res.json({items:resp.hits.hits,pages:pages});
+    }).catch(err => res.json(err))});
 }else{
-    var search =  {match:{
-            name: {
-                query: req.params.name,
-                fuzziness: 2
-            } 
-        }}
-    model.search(search ,(err,result)=>{
-        console.log(`error: ${err}`);
-        // if(result.hits.hits.length < 1){
-        //     result.hits.hits = [];
-        // };
-        res.json(result.hits.hits)});}
-})
+    
+    var search =  {
+        from: p*perPage - perPage,
+        size: 5,
+        query: {
+            match: {
+                name: {
+                    query: `${q}`,
+                    fuzziness: 1 
+                }
+            }
+        }
+    }
+
+        model.esSearch({
+            query:{
+                match:{
+                    name:{
+                        query: q,
+                        fuzziness: 1
+                    }
+                }
+            }
+        }, (err, respon) => {
+            model.esSearch(search ,(err,result)=>{
+                totalHits = respon.hits.total;
+                console.log(search);
+                console.log(`error: ${err}`);
+                console.log(result);
+                var r = result.hits.hits;
+                if(r.length < 1){
+                    r = [];
+                };
+                let pages = Math.ceil(totalHits/perPage);
+                res.json({items: r, pages: pages});
+            });
+        });
+    
+        
+    
+}
+});
+
 // GET ALL FROM CATEGORY
 
-router.get('all/:cat/:page',(req, res)=>{
+router.get('/all/:cat',(req, res)=>{
     var model = 0;
     switch(req.params.cat){
         case 'cameras': 
@@ -82,7 +140,7 @@ router.get('all/:cat/:page',(req, res)=>{
             model = 0;
             break;
     }
-    const page = req.params.page;
+    const page = req.query.page;
     if(model !== 0){
         model.paginate({}, {page: page, limit: perPage}).then(result => res.json({items: result.docs, pages: result.pages}));
     }else{
@@ -93,8 +151,6 @@ router.get('all/:cat/:page',(req, res)=>{
                 res.json({items: products.slice(perPage*page - perPage,perPage*page), pages: pages});
             }).catch(err => res.json({success: false}));  
     }
-})
-
-
+});
 
 module.exports = router;

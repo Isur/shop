@@ -19,90 +19,131 @@ class App extends Component {
     this.state = {
       page: 1,
       loaded:false,
-      category: '',
+      category: 'all',
       items: [],
       pages: 1,
-      search: null
+      search: '',
+      sort: "value"
     };
+
   }
 
   componentDidMount(){
-    this.setState({
-      category: location.pathname.split('/')[2] || '',
-      page: parseInt(location.pathname.split('/')[3], 10) || 1
-    }, async () => {
-      this.getItems(this.state.category, this.state.page);
-    })
-
-  }
-    search = (event) => {
+    const path = location.pathname.split('/');
+    if(path[2] === 'all'){
       this.setState({
-        search: event.target.value
-      }, async () =>{
-        this.getSearchItems(this.state.category, this.state.search);
+        category: location.pathname.split('/')[3] || '',
+        page: parseInt(location.search.split('=')[1], 10) || 1
+      }, async () => {
+        this.getItems();
+      })
+    }else if(path[2] === 'search'){
+      var search = location.search.split('&');
+      var searchState  = '';
+      var pageState = 1;
+      if(search[0] && search[0].split('=')[0] === '?name')  searchState = search[0].split('=')[1] || '';
+      if(search[1])  pageState = search[1].split('=')[1] || 1;
+      console.log(searchState);
+      this.setState({
+        category: location.pathname.split('/')[3] || '',
+        search: searchState|| '',
+        page: pageState || 1
+       }, async () => {
+        this.getSearchItems();
       })
     }
+  }
 
+    search = (event) => {
+      this.setState({
+        search: event.target.value,
+        page: 1
+      }, async () =>{
+        this.getSearchItems();
+      })
+    }
+    sort = (event) => {
+      this.setState({
+        sort: event.target.value,
+        page: 1
+      },async () => {
+        this.getSearchItems()
+      });
+    }
     selectPage = (page) => {
-      this.getItems(this.state.category, page);
+      this.setState({page: page}, async () => {
+      if(this.state.search === null || this.state.search==='') this.getItems();
+      else this.getSearchItems();
+      });
     }
     nextPage = () =>{
-      if(this.state.page < this.state.pages)
-        this.getItems(this.state.category, this.state.page + 1);
+      if(this.state.page < this.state.pages){
+        this.setState({page: this.state.page+1},async () => {
+          if(this.state.search === null || this.state.search==='') this.getItems();
+          else this.getSearchItems();
+        });
+        }
+
     }
 
     previousPage = () =>{
       if(this.state.page === 1) return;
+      this.setState({page: this.state.page-1}, async () => {
       if(this.state.page > this.state.pages){
-        this.getItems(this.state.category, this.state.pages);  
+        if(this.state.search === null || this.state.search==='') this.getItems();
+          else this.getSearchItems(); 
         return;
       }
       
-      this.getItems(this.state.category, this.state.page - 1);
+      if(this.state.search === null || this.state.search==='') this.getItems();
+      else this.getSearchItems();
+    });
     }
   selectCategory = (cat) =>{
-      this.getItems(cat,1);
+      this.clearInput();
+      this.setState({category: cat, page: 1},async () => {
+        this.getItems();
+      });
   }
 
-  getItems = (cat,page) =>{
+  clearInput = () => {
+    this.setState({search: ''});
+  }
+
+  getItems = () =>{
     this.setState({
       loaded: false,
-      category: cat,
-      page: page
     }, async () => {
-      axios.get(`/products/all/${this.state.category}/${this.state.page}`)
+      axios.get(`/products/all/${this.state.category}?page=${this.state.page}`)
       .then((res) => {
         this.setState({ 
           items: res.data.items,
           loaded: true,
           pages: res.data.pages,
         });
-        history.push(`/products/${this.state.category}/${this.state.page}`);
+        history.push(`/products/all/${this.state.category}?page=${this.state.page}`);
       }).catch(err =>{ console.log(err);
         this.setState({items: [], loaded: true})
       });   
     });
   }
 
-  getSearchItems = (cat, query) =>{
-    console.log(query);
+  getSearchItems = () =>{
+    if(this.state.query === ''){
+      this.getItems(this.state.category,1);
+      return;
+    }
     this.setState({
       loaded:false,
-      category: cat
     }, async () => {
-      const q = `/products/search/${this.state.category}/${query}`;
-      console.log(q);
+      const q = `/products/search/${this.state.category}/?name=${this.state.search}&page=${this.state.page}&sort=${this.state.sort}`;
       axios.get(q).then((res) => {
-        console.log(res);
-        var result = [];
-        if(res.data[0]){
-          result = res.data.map(a => a._source);
-        }else {result = res.data.items}
-        console.log(result);
           this.setState({
-          items: result,
+          items: res.data.items.map(a => a._source),
+          pages: res.data.pages,
           loaded: true
-        })
+        });
+        history.push(q);
       });
     })
   }
@@ -125,7 +166,11 @@ class App extends Component {
           selectPage={this.selectPage}
         />
         <Header 
-          search={this.search}/>
+          search={this.search}
+          input={this.state.search}
+          page={this.state.page}
+          sort={this.sort}
+          />
         {this.state.loaded===true &&
         <Items items={this.state.items}/> }
 

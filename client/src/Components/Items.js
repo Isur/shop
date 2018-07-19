@@ -22,11 +22,11 @@ return(
             <div>
                 {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id, diagonal, resolution,ram,rom,type}) => (
                     <Item 
+                        key={_id} 
                         name={name} 
                         producer={producer} 
                         value={value} 
                         description={description} 
-                        key={_id} 
                         rom={rom} 
                         ram={ram} 
                         diagonal={diagonal} 
