@@ -12,7 +12,8 @@ const TV = require('../../models/tv');
 const Phone = require('../../models/phone');
 const Computer = require('../../models/computer');
 
-const perPage = 5;
+const perPage = 10;
+const fuzziness = 3;
 
 function getESSort(sort){
     switch(sort){
@@ -60,7 +61,7 @@ router.get('/search/:cat/', (req,res)=>{
     var q = req.query.name;
     const p = req.query.page;
     const sort = getESSort(req.query.sort);
-    
+
     if(q == undefined){
         q = '';
     }
@@ -89,20 +90,17 @@ router.get('/search/:cat/', (req,res)=>{
         if(model === null){
             search = {body: {
                 from: p*perPage - perPage,
-                size: 5,
+                size: perPage,
                 sort: sort,
                 query: {
                     match: {
                         name: {
                             query: `${q}`,
-                            fuzziness: 1
+                            fuzziness: fuzziness
                         }
                     }
                 },
-                //sort: "value"
-                
             }}
-            
             client.search({q: q}).then(respo => {
                 totalHits = respo.hits.total
             
@@ -115,16 +113,15 @@ router.get('/search/:cat/', (req,res)=>{
       else res.json({items:resp.hits.hits,pages:pages});
     }).catch(err => res.json(err))});
 }else{
-    
     var search =  {
         from: p*perPage - perPage,
-        size: 5,
+        size: perPage,
         sort,
         query: {
             match: {
                 name: {
                     query: `${q}`,
-                    fuzziness: 1 
+                    fuzziness: fuzziness 
                 }
             }
         }
@@ -136,7 +133,7 @@ router.get('/search/:cat/', (req,res)=>{
                 match:{
                     name:{
                         query: q,
-                        fuzziness: 1
+                        fuzziness: fuzziness
                     }
                 }
             }
@@ -186,7 +183,7 @@ router.get('/all/:cat',(req, res)=>{
     const page = req.query.page;
     const sort = req.query.sort;
     if(model !== 0){
-        model.paginate({}, {page: page, limit: perPage, sort:sort}).then(result => res.json({items: result.docs, pages: result.pages}));
+        model.paginate({}, {page: page, limit: perPage, sort:getSort(sort)}).then(result => res.json({items: result.docs, pages: result.pages}));
     }else{
         Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
             val => { 

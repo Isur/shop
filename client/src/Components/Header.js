@@ -1,10 +1,10 @@
 import React from 'react';
-import { Input, Segment, Dropdown, Divider, Header } from 'semantic-ui-react';
+import { Input, Segment, Dropdown, Divider, Header, Form } from 'semantic-ui-react';
 const SearchBar = (props) =>{
     return(
-<Segment inverted>
-    <Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value}/>
-  </Segment>            
+
+    <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value}/>
+           
     );
 }
 
@@ -21,7 +21,7 @@ const getOptions = (search) => {
     ]}else {
         Options = [
             {text: "Cena malejąco",value: "valueDESC"},
-        {text: "Cena rosnąco",value: "value"},
+            {text: "Cena rosnąco",value: "value"},
         ]
     }
     return Options;
@@ -30,17 +30,38 @@ const getOptions = (search) => {
 const Sort = (props) => {
     
     return(
-        <Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} />
+
+            <Form.Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} />
     );
 }
 
+const category = (cat) =>{
+    switch(cat){
+        case 'all':
+            return 'Wszystko';
+        case 'phones':
+            return 'Telefony';
+        case 'computers':
+            return 'Kopmutery';
+        case 'cameras':
+            return 'Kamery';
+        case 'tvs':
+            return 'Telewizory';
+        default:
+            return 'none';
+    }
+}
+
 const MyHeader = (props) => {
+    const cat = category(props.category);
     return(
             <Segment inverted textAlign='center'> 
-                <Header as='h3' inverted>Strona: {props.page} </Header> 
+                <Header as='h3' inverted>Kategoria: {cat !== 'none' && cat} <br /> Strona: {props.page}  </Header> 
                 <Divider />
-                <SearchBar onChange={props.search} value={props.input}/>
-                <Sort onChange={props.sort} input={props.input}/>
+                <Form><Form.Group widths="equal">
+                    <SearchBar onChange={props.search} value={props.input}/>
+                    <Sort onChange={props.sort} input={props.input}/>
+                </Form.Group></Form>
             </Segment>
     );
 }

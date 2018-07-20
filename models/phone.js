@@ -30,6 +30,11 @@ const Phone = new Schema({
         required: true,
         es_indexed: true,
     },
+    imageLink:{
+        type: String,
+        required: true,
+        es_indexed: true,
+    },
     type: {
         type: String,
         required: true,

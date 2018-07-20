@@ -30,12 +30,13 @@ const MyMenu = (props) => {
         <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
         <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
         <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} />
-    </Menu>
+    </Menu> 
+   
     <Menu inverted fluid widths={9}>
         <Menu.Item  onClick={props.previousPage}> <Icon name="angle double left" /> </Menu.Item>
         <PageButton selectPage={props.selectPage}  list='false' page={1} />
-        {_.range(props.page-2,props.page+3).map(i => <PageButton selectPage={props.selectPage} list='true' key={i} page={i} pages={props.maxPages} /> )}
-        <PageButton selectPage={props.selectPage}  list='false' page={props.maxPages} />
+        {props.maxPages > 2 && _.range(props.page-2,props.page+3).map(i => <PageButton selectPage={props.selectPage} list='true' key={i} page={i} pages={props.maxPages} /> )}
+        {props.maxPages > 1 &&<PageButton selectPage={props.selectPage}  list='false' page={props.maxPages} />}
         <Menu.Item  onClick={props.nextPage}> <Icon name="angle double right" /> </Menu.Item>
     </Menu>
     </div>

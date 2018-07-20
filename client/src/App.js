@@ -50,6 +50,8 @@ class App extends ReactQueryParams {
        }, async () => {
         this.getSearchItems();
       })
+    }else{
+      this.getItems();
     }
   }
 
@@ -130,7 +132,7 @@ class App extends ReactQueryParams {
   }
 
   getSearchItems = () =>{
-    if(this.state.query === ''){
+    if(this.state.search === ''){
       this.getItems(this.state.category,1);
       return;
     }
@@ -168,6 +170,7 @@ class App extends ReactQueryParams {
           input={this.state.search}
           page={this.state.page}
           sort={this.sort}
+          category={this.state.category}
           />
         {this.state.loaded===true &&
         <Items items={this.state.items}/> }
