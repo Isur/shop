@@ -8,7 +8,7 @@ const Camera = new Schema({
     name:{
         type: String,
         required: true,
-        es_indexed: true,
+        es_indexed: true
     },
     resolution:{
         type: Number,

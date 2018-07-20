@@ -8,17 +8,29 @@ const SearchBar = (props) =>{
     );
 }
 
+const getOptions = (search) => {
+    var Options = [];
+    if(search.length < 1){
+        Options = [
+        {text: "Cena malejąco",value: "valueDESC"},
+        {text: "Cena rosnąco",value: "value"},
+        {text: "Nazwa malejąco",value: "nameDESC"},
+        {text: "Nazwa rosnąco",value: "name"},
+        {text: "Producent malejąco",value: "producerDESC"},
+        {text: "Producent rosnąco",value: "producer"},
+    ]}else {
+        Options = [
+            {text: "Cena malejąco",value: "valueDESC"},
+        {text: "Cena rosnąco",value: "value"},
+        ]
+    }
+    return Options;
+}
+
 const Sort = (props) => {
-    const Options = [
-        {text: "Cena malejąco",value: "value"},
-        {text: "Cena rosnąco",value: "valueDESC"},
-        {text: "Nazwa malejąco",value: "name"},
-        {text: "Nazwa rosnąco",value: "nameDESC"},
-        {text: "Producent malejąco",value: "producer"},
-        {text: "Producent rosnąco",value: "producerDESC"},
-    ]
+    
     return(
-        <Dropdown placeholder='Sortowanie' selection options={Options} onChange={props.onChange.bind(this)} />
+        <Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} />
     );
 }
 
@@ -28,7 +40,7 @@ const MyHeader = (props) => {
                 <Header as='h3' inverted>Strona: {props.page} </Header> 
                 <Divider />
                 <SearchBar onChange={props.search} value={props.input}/>
-                <Sort onChange={props.sort} />
+                <Sort onChange={props.sort} input={props.input}/>
             </Segment>
     );
 }

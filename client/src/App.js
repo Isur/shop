@@ -1,5 +1,5 @@
 // React
-import React, { Component } from 'react';
+import React from 'react';
 // Components
 import Items from './Components/Items';
 import Menu from './Components/Menu';
@@ -7,13 +7,13 @@ import Header from './Components/Header';
 // utilities
 import axios from 'axios';
 import createHistory from "history/createBrowserHistory";
+import ReactQueryParams from 'react-query-params';
 // images, css
 import './App.css';
 // History 
 const history = createHistory();
 const location = history.location;
-
-class App extends Component {
+class App extends ReactQueryParams {
   constructor(props){
     super(props);
     this.state = {
@@ -23,30 +23,29 @@ class App extends Component {
       items: [],
       pages: 1,
       search: '',
-      sort: "value"
+      sort: "value",
+      location: location.pathname
     };
 
   }
-
+  
   componentDidMount(){
     const path = location.pathname.split('/');
     if(path[2] === 'all'){
       this.setState({
         category: location.pathname.split('/')[3] || '',
-        page: parseInt(location.search.split('=')[1], 10) || 1
+        page: this.queryParams.page || 1
       }, async () => {
         this.getItems();
       })
     }else if(path[2] === 'search'){
-      var search = location.search.split('&');
-      var searchState  = '';
-      var pageState = 1;
-      if(search[0] && search[0].split('=')[0] === '?name')  searchState = search[0].split('=')[1] || '';
-      if(search[1])  pageState = search[1].split('=')[1] || 1;
-      console.log(searchState);
+      let searchState;
+      let pageState;
+      if(this.queryParams.name) searchState = this.queryParams.name;
+      if(this.queryParams.page)  pageState = this.queryParams.page;
       this.setState({
         category: location.pathname.split('/')[3] || '',
-        search: searchState|| '',
+        search: searchState || '',
         page: pageState || 1
        }, async () => {
         this.getSearchItems();
@@ -54,6 +53,7 @@ class App extends Component {
     }
   }
 
+  
     search = (event) => {
       this.setState({
         search: event.target.value,
@@ -62,12 +62,13 @@ class App extends Component {
         this.getSearchItems();
       })
     }
-    sort = (event) => {
+    sort = (event, data) => {
       this.setState({
-        sort: event.target.value,
+        sort: data.value,
         page: 1
       },async () => {
-        this.getSearchItems()
+        if(this.state.search === null || this.state.search==='') this.getItems();
+      else this.getSearchItems();
       });
     }
     selectPage = (page) => {
@@ -114,14 +115,14 @@ class App extends Component {
     this.setState({
       loaded: false,
     }, async () => {
-      axios.get(`/products/all/${this.state.category}?page=${this.state.page}`)
+      history.push(`/products/all/${this.state.category}?page=${this.state.page}&sort=${this.state.sort}`);
+      axios.get(`/products/all/${this.state.category}?page=${this.state.page}&sort=${this.state.sort}`)
       .then((res) => {
         this.setState({ 
           items: res.data.items,
           loaded: true,
           pages: res.data.pages,
         });
-        history.push(`/products/all/${this.state.category}?page=${this.state.page}`);
       }).catch(err =>{ console.log(err);
         this.setState({items: [], loaded: true})
       });   
@@ -137,13 +138,13 @@ class App extends Component {
       loaded:false,
     }, async () => {
       const q = `/products/search/${this.state.category}/?name=${this.state.search}&page=${this.state.page}&sort=${this.state.sort}`;
+      history.push(q);
       axios.get(q).then((res) => {
           this.setState({
           items: res.data.items.map(a => a._source),
           pages: res.data.pages,
           loaded: true
         });
-        history.push(q);
       });
     })
   }
@@ -154,9 +155,6 @@ class App extends Component {
     return (
 
       <div className="App">
-      {/* <Dimmer active={!this.state.loaded}>
-        <Loader>Loading</Loader>
-      </Dimmer> */}
         <Menu 
           selectCategory={this.selectCategory}
           previousPage={this.previousPage}

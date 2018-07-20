@@ -14,12 +14,52 @@ const Computer = require('../../models/computer');
 
 const perPage = 5;
 
+function getESSort(sort){
+    switch(sort){
+        case 'value':
+            return [{ value: { order: "asc" }},
+                    {_uid: {order: 'asc'}}]
+
+        case 'valueDESC':
+            return [{ value: { order: "desc" }},
+                    {_uid: {order: 'asc'}}]
+        default:
+            return [{_uid: {order: 'asc'}}]
+            
+    }
+}
+
+function getSort(sort){
+
+    switch(sort){
+        case 'value':       return {value: "asc"};
+        case 'valueDESC':   return {value: "desc"};
+        case 'name':        return {name: "asc"};
+        case 'nameDESC':    return {name: "desc"};
+        case 'producer':    return {producer: "asc"};
+        case 'producerDESC':return {producer: "desc"};
+        default: return {_uid: "asc"};
+    }
+} 
+
+function getSortAll(sort, toSort){
+    switch(sort){
+        case 'value':       return toSort.sort((a,b) => a.value - b.value);
+        case 'valueDESC':   return toSort.sort((a,b) => b.value - a.value);
+        case 'name':        return toSort.sort((a,b) => a.name - b.name);
+        case 'nameDESC':    return toSort.sort((a,b) => b.name - a.name);
+        case 'producer':    return toSort.sort((a,b) => a.producer - b.producer);
+        case 'producerDESC':return toSort.sort((a,b) => b.producer - a.producer);
+        default: return toSort.sort((a,b) => a._uid - b._uid);
+    }
+}
+
 router.get('/search/:cat/', (req,res)=>{
     console.log("superSzukajka");
     const cat = req.params.cat
     var q = req.query.name;
     const p = req.query.page;
-    const sort = req.query.sort;
+    const sort = getESSort(req.query.sort);
     
     if(q == undefined){
         q = '';
@@ -50,6 +90,7 @@ router.get('/search/:cat/', (req,res)=>{
             search = {body: {
                 from: p*perPage - perPage,
                 size: 5,
+                sort: sort,
                 query: {
                     match: {
                         name: {
@@ -58,7 +99,7 @@ router.get('/search/:cat/', (req,res)=>{
                         }
                     }
                 },
-                sort: "value"
+                //sort: "value"
                 
             }}
             
@@ -78,6 +119,7 @@ router.get('/search/:cat/', (req,res)=>{
     var search =  {
         from: p*perPage - perPage,
         size: 5,
+        sort,
         query: {
             match: {
                 name: {
@@ -87,8 +129,9 @@ router.get('/search/:cat/', (req,res)=>{
             }
         }
     }
-
+// for pagination to get total number of htis;
         model.esSearch({
+            sort,
             query:{
                 match:{
                     name:{
@@ -141,12 +184,14 @@ router.get('/all/:cat',(req, res)=>{
             break;
     }
     const page = req.query.page;
+    const sort = req.query.sort;
     if(model !== 0){
-        model.paginate({}, {page: page, limit: perPage}).then(result => res.json({items: result.docs, pages: result.pages}));
+        model.paginate({}, {page: page, limit: perPage, sort:sort}).then(result => res.json({items: result.docs, pages: result.pages}));
     }else{
         Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
             val => { 
-                const products = val[0].concat(val[1], val[2], val[3]);
+                let products = val[0].concat(val[1], val[2], val[3]);
+                products = getSortAll(sort, products);
                 const pages = Math.ceil(products.length/perPage);
                 res.json({items: products.slice(perPage*page - perPage,perPage*page), pages: pages});
             }).catch(err => res.json({success: false}));  
