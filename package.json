@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon --exec \"mocha --recursive\"",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
@@ -36,5 +36,9 @@
     "nodemon": "^1.18.1",
     "schema-object": "^4.0.11"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.2.0"
+  }
 }

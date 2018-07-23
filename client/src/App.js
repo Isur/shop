@@ -91,7 +91,13 @@ class App extends ReactQueryParams {
 
     previousPage = () =>{
       if(this.state.page === 1) return;
-      this.setState({page: this.state.page-1}, async () => {
+      
+      this.setState(() => { 
+        if(this.state.page > this.state.pages){
+          return{page: this.state.pages};
+        }
+        return {page: this.state.page-1};
+      }, async () => {
       if(this.state.page > this.state.pages){
         if(this.state.search === null || this.state.search==='') this.getItems();
           else this.getSearchItems(); 

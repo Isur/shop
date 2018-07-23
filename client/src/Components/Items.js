@@ -1,17 +1,8 @@
 import React from 'react';
 import { Message, Card, Icon, Image, Grid , Segment} from 'semantic-ui-react';
 import image from '../images/placeholder-avatar.jpg';
-            {/* <Message color="black" size="large">
-    <Message.Header> {props.name} </Message.Header>
-    <Message.List>
-        <Message.Item> {addInfo} </Message.Item>
-        <Message.Item> {props.producer} </Message.Item>
-        <Message.Item> {props.description} </Message.Item>
-        <Message.Item> ${props.value} </Message.Item>
-    </Message.List>
-  </Message> */}
+
 const Item = (props) => {
-    const addInfo = props.diagonal || props.resolution || props.rom || props.ram;
     return(
 <Grid.Column>
   <Card>
@@ -23,10 +14,10 @@ const Item = (props) => {
       <Card.Description>{props.description}</Card.Description>
     </Card.Content>
     <Card.Content extra>
-      <a>
+      <p style={{color: "green", fontWeight: 'bolder'}}>
         <Icon name='dollar sign' />
         {props.value}
-      </a>
+      </p>
     </Card.Content>
   </Card>
 </Grid.Column>
@@ -39,18 +30,13 @@ const Items = (props) => {
 return(
     <Segment inverted>
             <Grid columns='five' divided>
-                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id, diagonal, resolution,ram,rom,type, imageLink}) => (
+                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink}) => (
                     <Item 
                         key={_id} 
                         name={name} 
                         producer={producer} 
                         value={value} 
                         description={description} 
-                        rom={rom} 
-                        ram={ram} 
-                        diagonal={diagonal} 
-                        resolution={resolution}
-                        type={type}
                         image={imageLink}
                         />
                 ))}

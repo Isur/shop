@@ -47,10 +47,14 @@ function getSortAll(sort, toSort){
     switch(sort){
         case 'value':       return toSort.sort((a,b) => a.value - b.value);
         case 'valueDESC':   return toSort.sort((a,b) => b.value - a.value);
-        case 'name':        return toSort.sort((a,b) => a.name - b.name);
-        case 'nameDESC':    return toSort.sort((a,b) => b.name - a.name);
-        case 'producer':    return toSort.sort((a,b) => a.producer - b.producer);
-        case 'producerDESC':return toSort.sort((a,b) => b.producer - a.producer);
+        case 'name':        return toSort.sort((a,b) => {   if(a.name < b.name) return -1;
+                                                            if(a.name > b.name) return 1; return 0});
+        case 'nameDESC':    return toSort.sort((a,b) => {   if(a.name > b.name) return -1;
+                                                            if(a.name < b.name) return 1; return 0});
+        case 'producer':    return toSort.sort((a,b) => {   if(a.producer < b.producer) return -1;
+                                                            if(a.producer > b.producer) return 1; return 0});
+        case 'producerDESC':return toSort.sort((a,b) => {   if(a.producer > b.producer) return -1;
+                                                            if(a.producer < b.producer) return 1; return 0});
         default: return toSort.sort((a,b) => a._uid - b._uid);
     }
 }

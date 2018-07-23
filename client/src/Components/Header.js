@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Segment, Dropdown, Divider, Header, Form } from 'semantic-ui-react';
+import { Segment, Divider, Header, Form } from 'semantic-ui-react';
 const SearchBar = (props) =>{
     return(
 

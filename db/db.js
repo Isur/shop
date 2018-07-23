@@ -3,10 +3,6 @@ const TV = require('../models/tv');
 const Phone = require('../models/phone');
 const Computer = require('../models/computer');
 const faker = require('faker');
-//const desc = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, placeat adipisci. Minus rem dignissimos cum sunt saepe porro veritatis velit obcaecati dolor voluptatibus fugiat, nisi iure quasi impedit esse sapiente!";
-
-
-console.log(faker.fake("{{commerce.productName}}"));
 
 var product = faker.fake("{{commerce.productName}}");   
 var money = faker.fake("{{commerce.price}}");           
@@ -14,6 +10,7 @@ var producer = faker.fake("{{company.companyName}}");
 var desc = faker.fake("{{lorem.paragraph}}");           
 var number = faker.fake("{{random.number}}");          
 var image = `https://picsum.photos/200/300?image=1`;
+
 const fillDatabase = (howMuch) => {
     Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
         val => { 
