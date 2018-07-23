@@ -2,9 +2,7 @@ import React from 'react';
 import { Segment, Divider, Header, Form } from 'semantic-ui-react';
 const SearchBar = (props) =>{
     return(
-
-    <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value}/>
-           
+        <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value}/>
     );
 }
 
@@ -28,9 +26,7 @@ const getOptions = (search) => {
 }
 
 const Sort = (props) => {
-    
     return(
-
             <Form.Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} />
     );
 }

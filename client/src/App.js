@@ -24,9 +24,7 @@ class App extends ReactQueryParams {
       pages: 1,
       search: '',
       sort: "value",
-      location: location.pathname
     };
-
   }
   
   componentDidMount(){
@@ -34,19 +32,17 @@ class App extends ReactQueryParams {
     if(path[2] === 'all'){
       this.setState({
         category: location.pathname.split('/')[3] || '',
-        page: this.queryParams.page || 1
+        page: this.queryParams.page || 1,
+        sort: this.queryParams.sort || "value"
       }, async () => {
-        this.getItems();
+        this.getAllItems();
       })
     }else if(path[2] === 'search'){
-      let searchState;
-      let pageState;
-      if(this.queryParams.name) searchState = this.queryParams.name;
-      if(this.queryParams.page)  pageState = this.queryParams.page;
       this.setState({
         category: location.pathname.split('/')[3] || '',
-        search: searchState || '',
-        page: pageState || 1
+        search: this.queryParams.name || '',
+        page: this.queryParams.page || 1,
+        sort: this.queryParams.sort || "value"
        }, async () => {
         this.getSearchItems();
       })
@@ -55,76 +51,78 @@ class App extends ReactQueryParams {
     }
   }
 
+  getItems = () => {
+    if(this.state.search === null || this.state.search === '') 
+      return this.getAllItems()
+    else
+      return this.getSearchItems();    
+  }
   
-    search = (event) => {
-      this.setState({
-        search: event.target.value,
-        page: 1
-      }, async () =>{
-        this.getSearchItems();
-      })
-    }
-    sort = (event, data) => {
-      this.setState({
-        sort: data.value,
-        page: 1
-      },async () => {
-        if(this.state.search === null || this.state.search==='') this.getItems();
-      else this.getSearchItems();
-      });
-    }
-    selectPage = (page) => {
-      this.setState({page: page}, async () => {
-      if(this.state.search === null || this.state.search==='') this.getItems();
-      else this.getSearchItems();
-      });
-    }
-    nextPage = () =>{
-      if(this.state.page < this.state.pages){
-        this.setState({page: this.state.page+1},async () => {
-          if(this.state.search === null || this.state.search==='') this.getItems();
-          else this.getSearchItems();
-        });
-        }
-
-    }
-
-    previousPage = () =>{
-      if(this.state.page === 1) return;
-      
-      this.setState(() => { 
-        if(this.state.page > this.state.pages){
-          return{page: this.state.pages};
-        }
-        return {page: this.state.page-1};
-      }, async () => {
-      if(this.state.page > this.state.pages){
-        if(this.state.search === null || this.state.search==='') this.getItems();
-          else this.getSearchItems(); 
-        return;
-      }
-      
-      if(this.state.search === null || this.state.search==='') this.getItems();
-      else this.getSearchItems();
+  search = (event) => {
+    this.setState({
+      search: event.target.value,
+      page: 1
+    }, async () =>{
+      this.getItems();
+    })
+  }
+   
+  sort = (event, data) => {
+    this.setState({
+      sort: data.value,
+      page: 1
+    },async () => {
+      this.getItems();
     });
-    }
-  selectCategory = (cat) =>{
-      this.clearInput();
-      this.setState({category: cat, page: 1},async () => {
+  }
+
+  selectPage = (page) => {
+    this.setState({page: page}, async () => {
+    this.getItems();
+    });
+  }
+
+  nextPage = () =>{
+    if(this.state.page < this.state.pages){
+      this.setState({page: this.state.page+1},async () => {
         this.getItems();
       });
+    }
+  }
+
+  previousPage = () =>{
+    if(this.state.page === 1) return;
+    this.setState(() => { 
+      if(this.state.page > this.state.pages){
+        return{page: this.state.pages};
+      }
+        return {page: this.state.page-1};
+    }, async () => {
+      if(this.state.page > this.state.pages){
+        this.getItems();
+        return;
+      }
+      this.getItems();
+    });
+  }
+  selectCategory = (cat) =>{
+    this.clearInput();
+    this.setState({category: cat, page: 1},async () => {
+      this.getItems();
+    });
   }
 
   clearInput = () => {
     this.setState({search: ''});
   }
 
-  getItems = () =>{
+  getAllItems = () =>{
     this.setState({
       loaded: false,
     }, async () => {
-      history.push(`/products/all/${this.state.category}?page=${this.state.page}&sort=${this.state.sort}`);
-      axios.get(`/products/all/${this.state.category}?page=${this.state.page}&sort=${this.state.sort}`)
+      const q = `/products/all/${this.state.category}?page=${this.state.page}&sort=${this.state.sort}`
+      history.push(q);
+      axios.get(q)
       .then((res) => {
         this.setState({ 
           items: res.data.items,
@@ -132,16 +130,14 @@ class App extends ReactQueryParams {
           pages: res.data.pages,
         });
       }).catch(err =>{ console.log(err);
-        this.setState({items: [], loaded: true})
+        this.setState({
+          items: [], 
+          loaded: true})
       });   
     });
   }
 
   getSearchItems = () =>{
-    if(this.state.search === ''){
-      this.getItems(this.state.category,1);
-      return;
-    }
     this.setState({
       loaded:false,
     }, async () => {
@@ -149,7 +145,7 @@ class App extends ReactQueryParams {
       history.push(q);
       axios.get(q).then((res) => {
           this.setState({
-          items: res.data.items.map(a => a._source),
+          items: res.data.items.map(data => data._source),
           pages: res.data.pages,
           loaded: true
         });
@@ -157,11 +153,8 @@ class App extends ReactQueryParams {
     })
   }
 
-    
-  
   render() {
     return (
-
       <div className="App">
         <Menu 
           selectCategory={this.selectCategory}
@@ -180,12 +173,8 @@ class App extends ReactQueryParams {
           />
         {this.state.loaded===true &&
         <Items items={this.state.items}/> }
-
-
       </div>
-
     );
   }
 }
-
 export default App;
