@@ -1,93 +1,47 @@
-const Camera = require('../models/camera');
-const TV = require('../models/tv');
-const Phone = require('../models/phone');
-const Computer = require('../models/computer');
+const Item = require('../models/Item');
 const faker = require('faker');
 
-var product = faker.fake("{{commerce.productName}}");   
-var money = faker.fake("{{commerce.price}}");           
-var producer = faker.fake("{{company.companyName}}");
-var desc = faker.fake("{{lorem.paragraph}}");           
-var number = faker.fake("{{random.number}}");          
-var image = `https://picsum.photos/200/300?image=1`;
-
-const fillDatabase = (howMuch) => {
-    Promise.all([Camera.find(), TV.find(), Computer.find(), Phone.find()]).then(
-        val => { 
-            const products = val[0].concat(val[1], val[2], val[3]);
-            if(products.length === 0){
-                for(let i=1;i<=howMuch;i++){
-                    product = faker.fake("{{commerce.productName}}");
-                    money = faker.fake("{{commerce.price}}");        
-                    producer = faker.fake("{{company.companyName}}");
-                    desc = faker.fake("{{lorem.paragraph}}");        
-                    number = faker.fake("{{random.number}}"); 
-                    image = `https://picsum.photos/200/300?image=1${i}`;       
-                    const newTV = new TV({
-                        name: product,
-                        diagonal: number,
-                        description: desc,
-                        value: money,
-                        producer: producer,
-                        imageLink: image,
-                        type: 'TV'
-                    });
-                    product = faker.fake("{{commerce.productName}}");
-                    money = faker.fake("{{commerce.price}}");        
-                    producer = faker.fake("{{company.companyName}}");
-                    desc = faker.fake("{{lorem.paragraph}}");        
-                    number = faker.fake("{{random.number}}");  
-                    image = `https://picsum.photos/200/300?image=2${i}`;      
-                    newTV.save();
-                    const newPC = new Computer({
-                        name: product,
-                        ram: number,
-                        description: desc,
-                        value: money,
-                        producer: producer,
-                        imageLink: image,
-                        type: 'PC'
-                    });
-                    product = faker.fake("{{commerce.productName}}");
-                    money = faker.fake("{{commerce.price}}");        
-                    producer = faker.fake("{{company.companyName}}");
-                    desc = faker.fake("{{lorem.paragraph}}");        
-                    number = faker.fake("{{random.number}}");     
-                    image = `https://picsum.photos/200/300?image=4${i}`;   
-                    newPC.save();
-                    const newCamera = new Camera({
-                        name: product,
-                        resolution: number,
-                        description: desc,
-                        value: money,
-                        producer: producer,
-                        imageLink: image,
-                        type: 'Camera'
-                    });
-                    product = faker.fake("{{commerce.productName}}");
-                    money = faker.fake("{{commerce.price}}");        
-                    producer = faker.fake("{{company.companyName}}");
-                    desc = faker.fake("{{lorem.paragraph}}");        
-                    number = faker.fake("{{random.number}}");     
-                    image = `https://picsum.photos/200/300?image=3${i}`;   
-                    newCamera.save();
-                    const newPhone = new Phone({
-                        name: product,
-                        rom: number,
-                        description: desc,
-                        value: money,
-                        producer: producer,
-                        imageLink: image,
-                        type: 'Phone'
-                    });
-                    newPhone.save();
-               }
-
-
-               console.log('fill database done');
-            }
-        })
-   
-    
+selectType = (numberOfItem, amountOfItems) => {
+        if(1 <= numberOfItem  && numberOfItem <= amountOfItems / 4) 
+            return 'TV';
+        if(amountOfItems / 4 < numberOfItem && numberOfItem <= 2*amountOfItems / 4)
+            return 'Phone';
+        if(2 * amountOfItems / 4 < numberOfItem && numberOfItem <= 3*amountOfItems / 4)
+            return 'Computer';
+        if(3 * amountOfItems / 4< numberOfItem && numberOfItem <= amountOfItems)
+            return 'Camera';
 }
-module.exports = fillDatabase;
+
+checkAndFillDatabase = (howMuch) => {
+    Item.find().then(val => {
+        console.log(val.length);
+        if(val.length !== 0)
+            return;
+        else {        
+            var product, money, producer, desc, image, type;
+            for(let i=1;i<=howMuch;i++){
+                product = faker.fake("{{commerce.productName}}");
+                money = faker.fake("{{commerce.price}}");        
+                producer = faker.fake("{{company.companyName}}");
+                desc = faker.fake("{{lorem.paragraph}}");        
+                number = faker.fake("{{random.number}}"); 
+                image = `https://picsum.photos/250/300?image=${i}`;       
+                
+                type = selectType(i, howMuch);
+                    
+                const newItem = new Item({
+                    name: product,
+                    description: desc,
+                    value: money,
+                    producer: producer,
+                    imageLink: image,
+                    itemType: type
+                });
+                newItem.save();
+            }
+            
+            console.log('fill database done');
+        }
+    })
+}
+module.exports = checkAndFillDatabase;

@@ -4,16 +4,11 @@ const mongoosastic = require('mongoosastic');
 const Schema = mongoose.Schema;
 const host = require('../config/keys').elastic;
 
-const Phone = new Schema({
+const Item = new Schema({
     name:{
         type: String,
         required: true,
         es_indexed: true
-    },
-    rom:{
-        type: Number,
-        requiered: true,
-        es_indexed: true,
     },
     description:{
         type: String,
@@ -35,14 +30,14 @@ const Phone = new Schema({
         required: true,
         es_indexed: true,
     },
-    type: {
+    itemType: {
         type: String,
         required: true,
         es_indexed: true,
     }
 });
 
-Phone.plugin(mongoosastic,{hosts:[host]});
-Phone.plugin(mongoosePaginate);
+Item.plugin(mongoosastic,{hosts:[host]});
+Item.plugin(mongoosePaginate);
 
-module.exports = Item = mongoose.model('phone', Phone);
+module.exports = item = mongoose.model('item', Item);

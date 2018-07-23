@@ -18,6 +18,7 @@ const Item = (props) => {
         <Icon name='dollar sign' />
         {props.value}
       </p>
+      <p>{props.type}</p>
     </Card.Content>
   </Card>
 </Grid.Column>
@@ -30,7 +31,7 @@ const Items = (props) => {
 return(
     <Segment inverted>
             <Grid columns='five' divided>
-                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink}) => (
+                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink,itemType}) => (
                     <Item 
                         key={_id} 
                         name={name} 
@@ -38,6 +39,7 @@ return(
                         value={value} 
                         description={description} 
                         image={imageLink}
+                        type={itemType}
                         />
                 ))}
             </Grid>

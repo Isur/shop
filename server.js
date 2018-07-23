@@ -10,7 +10,7 @@
   const db = require('./config/keys').mongoURL;
   mongoose.connect(db)
   .then(() => console.log("MongoDB Connected"))
-  .then(fillDatabase(100))
+  .then(fillDatabase(400))
   .catch(err => console.log(err));
   
   
