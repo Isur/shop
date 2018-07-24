@@ -4,15 +4,17 @@ const MenuItem = (props) => {
     return(
         <Menu.Item onClick={() => props.onClick(props.funcParam)}> 
             { props.ButtonText }
+            <Icon size="small" name={props.icon}/>
         </Menu.Item>
     );
 }
 
 const MainMenu = (props) => {
     return(
-        <Menu inverted fluid width={6} size="small">
-            <MenuItem funcParam="home" ButtonText="Home" onClick={props.selectRoute}/>
-            <MenuItem funcParam="products" ButtonText="Produkty" onClick={props.selectRoute}/>
+        <Menu icon="labeled" inverted>
+            <MenuItem funcParam="home" ButtonText="Home" onClick={props.selectRoute} icon="home"/>
+            <MenuItem funcParam="products" ButtonText="Produkty" onClick={props.selectRoute} icon="cart"/>
+            
         </Menu> 
     )
 }

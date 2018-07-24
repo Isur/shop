@@ -47,34 +47,7 @@ class App extends ReactQueryParams {
   }
   
   componentDidMount(){
-    const path = location.pathname.split('/');
-    if(path[1] === 'products'){
-      if(path[2] === 'all'){
-        this.setState({
-          category: location.pathname.split('/')[3] || 'all',
-          page: this.queryParams.page || 1,
-          sort: this.queryParams.sort || "value",
-          route: "products"
-        }, async () => {
-          this.getAllItems();
-        })
-      }else if(path[2] === 'search'){
-        this.setState({
-          category: location.pathname.split('/')[3] || '',
-          search: this.queryParams.name || 'all',
-          page: this.queryParams.page || 1,
-          sort: this.queryParams.sort || "value",
-          route: "products"
-        }, async () => {
-          this.getSearchItems();
-        })
-      }else{
-        this.getItems();
-      }
-    }
-    else {
-      this.selectRoute(path[1])
-    }
+
   }
 
   getItems = () => {
@@ -84,15 +57,6 @@ class App extends ReactQueryParams {
       return this.getSearchItems();    
   }
 
-  selectRoute = (route) =>{
-    this.setState({
-      route: route
-    });
-    history.push(`/${route}`);
-    if(route === 'products') 
-      this.getItems();
-  }
-  
   search = (event) => {
     this.setState({
       search: event.target.value,
@@ -102,52 +66,7 @@ class App extends ReactQueryParams {
       this.getItems();
     })
   }
-   
-  sort = (event, data) => {
-    this.setState({
-      sort: data.value,
-      page: 1,
-      route: "products",
-    },async () => {
-      this.getItems();
-    });
-  }
 
-  selectPage = (page) => {
-    this.setState({page: page}, async () => {
-    this.getItems();
-    });
-  }
-
-  nextPage = () =>{
-    if(this.state.page < this.state.pages){
-      this.setState({page: this.state.page+1},async () => {
-        this.getItems();
-      });
-    }
-  }
-
-  previousPage = () =>{
-    if(this.state.page === 1) return;
-    this.setState(() => { 
-      if(this.state.page > this.state.pages){
-        return{page: this.state.pages};
-      }
-        return {page: this.state.page-1};
-    }, async () => {
-      if(this.state.page > this.state.pages){
-        this.getItems();
-        return;
-      }
-      this.getItems();
-    });
-  }
-  selectCategory = (cat) =>{
-    this.clearInput();
-    this.setState({category: cat, page: 1, route:"products"},async () => {
-      this.getItems();
-    });
-  }
 
   clearInput = () => {
     this.setState({search: ''});
@@ -195,32 +114,7 @@ class App extends ReactQueryParams {
   render() {
     return (
       <div className="App">
-      <MainMenu selectRoute={this.selectRoute} />
-      {this.state.route === 'products' &&
-        <div><Menu 
-          selectCategory={this.selectCategory}
-          previousPage={this.previousPage}
-          nextPage={this.nextPage}
-          page={this.state.page}
-          maxPages={this.state.pages}
-          selectPage={this.selectPage}
-          selectRoute={this.selectRoute}
-        />
-        <Header 
-          search={this.search}
-          input={this.state.search}
-          page={this.state.page}
-          sort={this.sort}
-          category={this.state.category}
-          />
-           { this.state.pages > 1 && <PaginationMenu 
-          previousPage={this.previousPage}
-          nextPage={this.nextPage}
-          page={this.state.page}
-          maxPages={this.state.pages}
-          selectPage={this.selectPage}
-          /> }</div>}
-        {mainPage(this.state.route, this.state.loaded, this.state.items)}
+        
       </div>
     );
   }

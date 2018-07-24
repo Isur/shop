@@ -1,6 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 const MenuItem = (props) => {
     return(
         <Menu.Item onClick={() => props.onClick(props.funcParam)}> 
