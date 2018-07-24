@@ -57,6 +57,11 @@ getType = (cat) =>{
     }
 }
 // SEARCH
+router.get('/search/byId/:id', (req,res)=>{
+    const id = req.params.id;
+    Item.findById(id).then(resp => res.json(resp));
+});
+
 router.get('/search/:cat/', (req,res)=>{
     const category = req.params.cat
     var query = req.query.name;

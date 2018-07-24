@@ -16,6 +16,7 @@ const PageButton = (props) =>{
 
 
 const PaginationMenu = (props) => {
+    console.log(props);
     return(
         <Menu inverted fluid widths={9}>
             <Menu.Item  onClick={props.previousPage}> 

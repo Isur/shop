@@ -1,6 +1,7 @@
 import React from 'react';
 import { Message, Card, Icon, Image, Grid , Segment} from 'semantic-ui-react';
 import image from '../images/placeholder-avatar.jpg';
+import { Link } from 'react-router-dom';
 
 const Item = (props) => {
     return(
@@ -8,7 +9,10 @@ const Item = (props) => {
             <Card>
                 <Image src={props.image} fluid onError={(e)=>{e.target.src=image}}/>
                 <Card.Content>
-                    <Card.Header>{props.name}</Card.Header>
+                    <Card.Header><Link to={{
+                        pathname: `/products/item/`,
+                        search: `?id=${props.id}`,
+                    }}>{props.name}</Link></Card.Header>
                     <Card.Meta>{props.producer}</Card.Meta>
                     <Card.Description>{props.description}</Card.Description>
                 </Card.Content>
@@ -32,6 +36,7 @@ const Items = (props) => {
                 {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink,itemType}) => (
                     <Item 
                         key={_id} 
+                        id={_id}
                         name={name} 
                         producer={producer} 
                         value={value} 

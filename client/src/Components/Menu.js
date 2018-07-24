@@ -1,9 +1,13 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 const MenuItem = (props) => {
     return(
-        <Menu.Item onClick={() => props.onClick(props.funcParam)}> 
-            { props.ButtonText }
+        <Menu.Item> 
+        <Link to={{
+            pathname: `/products/${props.funcParam}`,
+            //search: '?page=1&sort=value',
+        }}> {props.ButtonText} </Link>
         </Menu.Item>
     );
 }
