@@ -4,6 +4,9 @@ import React from 'react';
 import Items from './Components/Items';
 import Menu from './Components/Menu';
 import Header from './Components/Header';
+import Home from './Components/Home';
+import NotFound from './Components/NotFound';
+import Loading from './Components/Loading';
 // utilities
 import axios from 'axios';
 import createHistory from "history/createBrowserHistory";
@@ -13,6 +16,19 @@ import './App.css';
 // History 
 const history = createHistory();
 const location = history.location;
+
+const mainPage = (route, loaded, items) =>{
+  if(route === 'products'){
+    if(loaded === false)
+      return <Loading />
+    return <Items items={items}/>
+  }
+  else if(route === 'home'){
+    return <Home />
+  }else {
+    return <NotFound />
+  }
+}
 class App extends ReactQueryParams {
   constructor(props){
     super(props);
@@ -25,29 +41,37 @@ class App extends ReactQueryParams {
       search: '',
       sort: "value",
     };
+    //this.selectRoute('home');
   }
   
   componentDidMount(){
     const path = location.pathname.split('/');
-    if(path[2] === 'all'){
-      this.setState({
-        category: location.pathname.split('/')[3] || '',
-        page: this.queryParams.page || 1,
-        sort: this.queryParams.sort || "value"
-      }, async () => {
-        this.getAllItems();
-      })
-    }else if(path[2] === 'search'){
-      this.setState({
-        category: location.pathname.split('/')[3] || '',
-        search: this.queryParams.name || '',
-        page: this.queryParams.page || 1,
-        sort: this.queryParams.sort || "value"
-       }, async () => {
-        this.getSearchItems();
-      })
-    }else{
-      this.getItems();
+    if(path[1] === 'products'){
+      if(path[2] === 'all'){
+        this.setState({
+          category: location.pathname.split('/')[3] || 'all',
+          page: this.queryParams.page || 1,
+          sort: this.queryParams.sort || "value",
+          route: "products"
+        }, async () => {
+          this.getAllItems();
+        })
+      }else if(path[2] === 'search'){
+        this.setState({
+          category: location.pathname.split('/')[3] || '',
+          search: this.queryParams.name || 'all',
+          page: this.queryParams.page || 1,
+          sort: this.queryParams.sort || "value",
+          route: "products"
+        }, async () => {
+          this.getSearchItems();
+        })
+      }else{
+        this.getItems();
+      }
+    }
+    else {
+      this.selectRoute(path[1])
     }
   }
 
@@ -57,11 +81,21 @@ class App extends ReactQueryParams {
     else
       return this.getSearchItems();    
   }
+
+  selectRoute = (route) =>{
+    this.setState({
+      route: route
+    });
+    history.push(`/${route}`);
+    if(route === 'products') 
+      this.getItems();
+  }
   
   search = (event) => {
     this.setState({
       search: event.target.value,
-      page: 1
+      page: 1,
+      route: "products",
     }, async () =>{
       this.getItems();
     })
@@ -70,7 +104,8 @@ class App extends ReactQueryParams {
   sort = (event, data) => {
     this.setState({
       sort: data.value,
-      page: 1
+      page: 1,
+      route: "products",
     },async () => {
       this.getItems();
     });
@@ -107,7 +142,7 @@ class App extends ReactQueryParams {
   }
   selectCategory = (cat) =>{
     this.clearInput();
-    this.setState({category: cat, page: 1},async () => {
+    this.setState({category: cat, page: 1, route:"products"},async () => {
       this.getItems();
     });
   }
@@ -153,6 +188,8 @@ class App extends ReactQueryParams {
     })
   }
 
+  
+
   render() {
     return (
       <div className="App">
@@ -163,6 +200,7 @@ class App extends ReactQueryParams {
           page={this.state.page}
           maxPages={this.state.pages}
           selectPage={this.selectPage}
+          selectRoute={this.selectRoute}
         />
         <Header 
           search={this.search}
@@ -171,8 +209,7 @@ class App extends ReactQueryParams {
           sort={this.sort}
           category={this.state.category}
           />
-        {this.state.loaded===true &&
-        <Items items={this.state.items}/> }
+        {mainPage(this.state.route, this.state.loaded, this.state.items)}
       </div>
     );
   }

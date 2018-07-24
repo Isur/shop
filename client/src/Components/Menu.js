@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { Icon, Menu } from 'semantic-ui-react';
 const MenuItem = (props) => {
     return(
-        <Menu.Item onClick={() => props.selectCategory(props.cat)}> 
-            { props.CategoryName }
+        <Menu.Item onClick={() => props.onClick(props.funcParam)}> 
+            { props.ButtonText }
         </Menu.Item>
     );
 }
@@ -23,13 +23,17 @@ const PageButton = (props) =>{
 
 const MyMenu = (props) => {
     return(
-    <div>        
-        <Menu inverted fluid widths={5} size="massive">
-            <MenuItem cat="all" CategoryName="Wszystko" selectCategory={props.selectCategory}/>            
-            <MenuItem cat="cameras" CategoryName="Kamery" selectCategory={props.selectCategory} />            
-            <MenuItem cat="tvs" CategoryName="TV" selectCategory={props.selectCategory} />            
-            <MenuItem cat="computers" CategoryName="Komputery" selectCategory={props.selectCategory} />            
-            <MenuItem cat="phones" CategoryName="Telefony" selectCategory={props.selectCategory} />
+    <div>
+        <Menu inverted fluid width={6} size="small">
+            <MenuItem funcParam="home" ButtonText="Home" onClick={props.selectRoute}/>
+            <MenuItem funcParam="products" ButtonText="Produkty" onClick={props.selectRoute}/>
+        </Menu>        
+        <Menu inverted fluid widths={6} size="massive">
+            <MenuItem funcParam="all" ButtonText="Wszystko" onClick={props.selectCategory} />            
+            <MenuItem funcParam="cameras" ButtonText="Kamery" onClick={props.selectCategory} />            
+            <MenuItem funcParam="tvs" ButtonText="TV" onClick={props.selectCategory} />            
+            <MenuItem funcParam="computers" ButtonText="Komputery" onClick={props.selectCategory} />            
+            <MenuItem funcParam="phones" ButtonText="Telefony" onClick={props.selectCategory} />
         </Menu> 
    
         <Menu inverted fluid widths={9}>
