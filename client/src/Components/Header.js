@@ -2,7 +2,7 @@ import React from 'react';
 import { Segment, Divider, Header, Form } from 'semantic-ui-react';
 const SearchBar = (props) =>{
     return(
-        <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value}/>
+        <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value} width={props.width}/>
     );
 }
 
@@ -27,7 +27,7 @@ const getOptions = (search) => {
 
 const Sort = (props) => {
     return(
-            <Form.Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} />
+            <Form.Dropdown placeholder='Sortowanie' selection options={getOptions(props.input)} onChange={props.onChange} width={props.width}/>
     );
 }
 
@@ -55,8 +55,8 @@ const MyHeader = (props) => {
                 <Header as='h3' inverted>Kategoria: {cat !== 'none' && cat} <br /> Strona: {props.page}  </Header> 
                 <Divider />
                 <Form><Form.Group widths="equal">
-                    <SearchBar onChange={props.search} value={props.input}/>
-                    <Sort onChange={props.sort} input={props.input}/>
+                    <SearchBar onChange={props.search} value={props.input} />
+                    <Sort onChange={props.sort} input={props.input} />
                 </Form.Group></Form>
             </Segment>
     );

@@ -7,6 +7,8 @@ import Header from './Components/Header';
 import Home from './Components/Home';
 import NotFound from './Components/NotFound';
 import Loading from './Components/Loading';
+import PaginationMenu from './Components/PaginationMenu';
+import MainMenu from './Components/MainMenu';
 // utilities
 import axios from 'axios';
 import createHistory from "history/createBrowserHistory";
@@ -193,7 +195,9 @@ class App extends ReactQueryParams {
   render() {
     return (
       <div className="App">
-        <Menu 
+      <MainMenu selectRoute={this.selectRoute} />
+      {this.state.route === 'products' &&
+        <div><Menu 
           selectCategory={this.selectCategory}
           previousPage={this.previousPage}
           nextPage={this.nextPage}
@@ -209,6 +213,13 @@ class App extends ReactQueryParams {
           sort={this.sort}
           category={this.state.category}
           />
+           { this.state.pages > 1 && <PaginationMenu 
+          previousPage={this.previousPage}
+          nextPage={this.nextPage}
+          page={this.state.page}
+          maxPages={this.state.pages}
+          selectPage={this.selectPage}
+          /> }</div>}
         {mainPage(this.state.route, this.state.loaded, this.state.items)}
       </div>
     );

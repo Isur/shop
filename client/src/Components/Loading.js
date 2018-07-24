@@ -1,9 +1,15 @@
 import React from 'react';
-import { Message } from 'semantic-ui-react';
+import { Message, Icon } from 'semantic-ui-react';
 
 const Loading = () => {
     return(
-        <Message size="huge"> Wczytywanie danych... Proszę chwilkę zaczekać...</Message>
+        <Message icon size="massive">
+            <Icon name='circle notched' loading size="huge"/>
+                <Message.Content>
+                    <Message.Header>Wczytywanie danych</Message.Header>
+                    Proszę chwilkę zaczekać
+                </Message.Content>
+        </Message>
     )
 }
 
