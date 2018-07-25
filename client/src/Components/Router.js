@@ -8,6 +8,7 @@ import Products from './Products';
 import Item from './Item';
 import Login from './Login';
 import Register from './Register';
+import AddNew from './AddNew';
 const Router = () => {
     return(
         <Switch>
@@ -15,6 +16,7 @@ const Router = () => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/products/add" component={AddNew} />
             <Route exact path="/products" render={() => <Products category="all"/>} />
             <Route exact path="/products/item/" render={() => <Item />} />
             <Route exact path='/products/all' render={() => <Products key={'all'} category="all"/>} />

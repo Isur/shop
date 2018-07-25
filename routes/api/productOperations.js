@@ -15,4 +15,18 @@ router.delete('/delete/:id', (req,res) => {
         Item.remove({}, () => res.json({suc: true}));
      });
 
+// ADD ITEM
+router.post('/addItem', (req,res) => {
+    const newItem = new Item({
+        name: req.body.name,
+        description: req.body.description,
+        longDescription: req.body.longDescription,
+        value: req.body.value,
+        producer: req.body.producer,
+        imageLink: req.body.imageLink,
+        itemType: req.body.itemType
+    });
+    newItem.save().then(resp => res.json(resp));
+})
+
 module.exports = router;
