@@ -15,6 +15,10 @@ const Item = new Schema({
         required: true,
         es_indexed: true,
     },
+    longDescription:{
+        type: String,
+        required: true,
+    },
     value:{
         type: Number,
         required: true,

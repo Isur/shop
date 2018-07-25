@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Item = (props) => {
     return(
-        <Grid.Column>
+        <Grid.Column mobile={16} tablet={8} computer={3} >
             <Card>
                 <Image src={props.image} fluid onError={(e)=>{e.target.src=image}}/>
                 <Card.Content>
@@ -32,7 +32,7 @@ const Item = (props) => {
 const Items = (props) => {
     return(
         <Segment inverted>
-            <Grid columns='five' divided>
+            <Grid stackable  divided className="ui center aligned grid">
                 {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink,itemType}) => (
                     <Item 
                         key={_id} 

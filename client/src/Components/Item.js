@@ -9,6 +9,7 @@ constructor(props){
         name: null,
         value: null,
         description: null,
+        shortDesc: null,
         image: null
     }
 }
@@ -23,7 +24,8 @@ getItem(){
             this.setState({
                 name: res.data.name,
                 value: res.data.value,
-                description: res.data.description,
+                description: res.data.longDescription,
+                shortDesc: res.data.description,
                 image: res.data.imageLink
             })
         }
@@ -34,6 +36,12 @@ getItem(){
         <Container text>
             <Header as='h1' color='yellow'><Icon name='shop' />{this.state.name && this.state.name}</Header>
             <Divider inverted />
+            <Divider horizontal inverted>
+                Skrócony opis
+            </Divider>
+            <p style={{color:'silver'}}>
+                {this.state.shortDesc && this.state.shortDesc}
+            </p>
             <Divider horizontal inverted>
                 Opis
             </Divider>

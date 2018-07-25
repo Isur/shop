@@ -17,6 +17,8 @@ const MainMenu = (props) => {
         <Menu icon="labeled" inverted>
             <MenuItem funcParam="home" ButtonText="Home"  icon="home"/>
             <MenuItem funcParam="products" ButtonText="Produkty" icon="cart"/>
+            <MenuItem funcParam="login" ButtonText="Login" icon="sign in"/>
+            <MenuItem funcParam="register" ButtonText="Rejestracja" icon="signup"/>
         </Menu> 
     )
 }

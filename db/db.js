@@ -26,12 +26,13 @@ checkAndFillDatabase = (howMuch) => {
                 desc = faker.fake("{{lorem.paragraph}}");        
                 number = faker.fake("{{random.number}}"); 
                 image = `https://picsum.photos/250/300?image=${i}`;       
-                
+                description = faker.fake("{{lorem.paragraphs}}") + faker.fake("{{lorem.paragraphs}}") ;
                 type = selectType(i, howMuch);
                     
                 const newItem = new Item({
                     name: product,
                     description: desc,
+                    longDescription: description,
                     value: money,
                     producer: producer,
                     imageLink: image,
