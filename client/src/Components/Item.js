@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Header, Icon, Divider, Image } from 'semantic-ui-react';
 import axios from 'axios';
 import ReactQueryParams from 'react-query-params';
+import image from '../images/placeholder-avatar.jpg';
 class Item extends ReactQueryParams{
 constructor(props){
     super(props)
@@ -46,7 +47,7 @@ getItem(){
                 Opis
             </Divider>
             <p style={{color:'silver'}}>
-            <Image src={this.state.image && this.state.image} size='small' floated='right' />
+            <Image src={this.state.image && this.state.image} onError={(e)=>{e.target.src=image}} size='small' floated='right' />
                 {this.state.description && this.state.description}
             </p><Divider horizontal inverted />
             <Divider horizontal inverted>

@@ -19,9 +19,11 @@ mongoose.connect(db)
 // routes:
 const search = require('./routes/api/productSearch');
 const operations = require('./routes/api/productOperations');
+const users = require('./routes/api/userOperations');
 // routes:
 app.use('/products', search);  
 app.use('/api', operations);
+app.use('/user', users);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));

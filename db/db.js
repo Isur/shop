@@ -1,4 +1,5 @@
 const Item = require('../models/Item');
+const User = require('../models/User');
 const faker = require('faker');
 
 selectType = (numberOfItem, amountOfItems) => {
@@ -41,7 +42,7 @@ checkAndFillDatabase = (howMuch) => {
                 newItem.save();
             }
             
-            console.log('fill database done');
+            console.log('fill database with items - done');
         }
     })
 }

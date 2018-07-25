@@ -14,7 +14,6 @@ import ReactQueryParams from 'react-query-params';
 class Products extends ReactQueryParams{
     constructor(props){
         super(props)
-        console.log(props);
         this.state = {
             loaded: false,
             items: [],
@@ -32,7 +31,6 @@ class Products extends ReactQueryParams{
             sort: this.queryParams.sort || 'value',
             search: this.queryParams.search || '',
         }, async () => {
-            console.log("Component loaded... getting items!")
             this.getItems();
 
         })

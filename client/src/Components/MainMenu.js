@@ -5,8 +5,8 @@ const MenuItem = (props) => {
     return(
         <Menu.Item> 
             <Link to={`/${props.funcParam}`}>  
+                <Icon name={props.icon} />
                 { props.ButtonText }
-                <Icon size="small" name={props.icon}/>
             </Link>
         </Menu.Item>
     );
