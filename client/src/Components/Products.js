@@ -128,14 +128,6 @@ class Products extends ReactQueryParams{
           this.getItems();
         })
     }
-    sort = (event, data) => {
-        this.setState({
-          sort: data.value,
-          page: 1,
-        },async () => {
-          this.getItems();
-        });
-      }
     render(){
     return(
     <div>

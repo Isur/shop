@@ -40,14 +40,13 @@ class AddNewItem extends React.Component{
     this.validateShortDescription = this.validateShortDescription.bind(this);
     this.validateType = this.validateType.bind(this);
     this.validateValue = this.validateValue.bind(this);
-
-
-    
    }
+
    componentDidMount(){
     this.isError();
    }
-    types = [
+
+   types = [
         {text: "Kamera", value:"camera"},
         {text: "Telefon", value:"phone"},
         {text: "Komputer", value:"computer"},

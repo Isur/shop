@@ -1,8 +1,15 @@
 import React from 'react';
 import { Segment, Divider, Header, Form } from 'semantic-ui-react';
+import { DebounceInput } from 'react-debounce-input';
 const SearchBar = (props) =>{
     return(
-        <Form.Input inverted placeholder='Szukaj...' onChange={props.onChange} value={props.value} width={props.width}/>
+        <DebounceInput minLength={2}
+          debounceTimeout={500}
+          element={Form.Input}
+          placeholder='Szukaj...' 
+          onChange={props.onChange} 
+          value={props.value}
+          />
     );
 }
 
