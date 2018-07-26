@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
+const jwt = require('jsonwebtoken');
+const exjwt = require('express-jwt');
 const User = require('../../models/User');
-
+const jwtMW = exjwt({
+    secret: 'keyboard cat 4 ever'
+  });
 // DELETE ITEM
 router.delete('/delete/:id', (req,res) => {
     User.findById(req.params.id)
@@ -29,5 +32,21 @@ router.delete('/delete/:id', (req,res) => {
 
          newUser.save().then(resp => res.json(resp));
      });
-    
+// LOGIN
+     router.post('/login', (req,res) => {
+         User.findOne({login: req.body.login})
+            .then(user => {
+                if(user.validPassword(req.body.password)){
+                    let token = jwt.sign({login:user.login, mail: user.mail }, 'keyboard cat 4 ever', {expiresIn: 129600});
+                    res.json({success: true, err: null, token});
+                } else {
+                    res.status(401).json({success: false, token: null, err: "failed"});
+                }
+            }).catch(err => res.json({success: false, token: null, err:"failed"}));
+     })
+
+// IS LOGGED
+     router.get('/logged', jwtMW, (req,res) => {
+        res.json({logged: true});
+     })
 module.exports = router;

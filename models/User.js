@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const User = new Schema({
     login:{
         type:String,
+        unique: true,
         required: true,
     },
     firstName:{

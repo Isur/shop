@@ -147,7 +147,6 @@ class AddNewItem extends React.Component{
         event.preventDefault();
         
         this.setState({sent:false}, async () => {
-            console.log("tyyyyy");
             if(this.isError() === false){
                 this.setState({sending: true}, async () => {
                     axios.post('/api/addItem',{

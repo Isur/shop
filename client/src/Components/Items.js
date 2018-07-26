@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message, Card, Icon, Image, Grid , Segment} from 'semantic-ui-react';
+import { Message, Card, Icon, Image, Grid , Segment, Button} from 'semantic-ui-react';
 import image from '../images/placeholder-avatar.jpg';
 import { Link } from 'react-router-dom';
 
@@ -23,6 +23,9 @@ const Item = (props) => {
                     <p style={{color: "silver", fontWeight: "bolder"}}>
                         {props.type}
                     </p>
+                    <Button color="red" icon onClick={() => props.deleteItem(props.id)}>
+                        <Icon name="delete"/>
+                    </Button>
                 </Card.Content>
             </Card>
         </Grid.Column>
@@ -43,6 +46,7 @@ const Items = (props) => {
                         description={description} 
                         image={imageLink}
                         type={itemType}
+                        deleteItem={props.deleteItem}
                     />
                 ))}
             </Grid>

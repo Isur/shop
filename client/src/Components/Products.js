@@ -128,6 +128,14 @@ class Products extends ReactQueryParams{
           this.getItems();
         })
     }
+
+    deleteItem = (id) => {
+      console.log(`to delete: ${id}`);
+      this.setState({
+        items: this.state.items.filter(el => el._id !== id)
+      })
+      axios.delete(`/api/delete/${id}`);
+    }
     render(){
     return(
     <div>
@@ -149,7 +157,7 @@ class Products extends ReactQueryParams{
             />
         </Segment>
         <Segment inverted>
-           {this.state.loaded && <Items items={this.state.items} />}
+           {this.state.loaded && <Items items={this.state.items} deleteItem={this.deleteItem} />}
            {!this.state.loaded && <Loading />}
         </Segment>
     </div>
