@@ -16,14 +16,15 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      token : ``,
-      logged: false
+      logged: false,
+      id: '',
     }
   }
   
   componentDidMount(){
+    cookie.load('token')
+    cookie.load('id');
     this.isLogged();
-    cookie.load('token');
   }
 
   Logout = () => {
@@ -31,14 +32,19 @@ class App extends React.Component {
     this.isLogged();
   }
 
-  login = () => {
-      this.isLogged();
+  login = (token, id) => {
+    cookie.save(
+      'token', 
+      `Bearer ${token}`, 
+    );
+    cookie.save('id', id);
+    
+    this.isLogged();
   }
 
   
   isLogged = () => {
-    console.log(cookie.load('token'));
-    axios({method: 'get', url:'user/logged', headers: {'Authorization' : cookie.load('token')}})
+    axios({method: 'get', url:'/user/logged', headers: {'Authorization' : cookie.load('token')}})
       .then(() => this.setState({logged: true}))
       .catch((() => this.setState({logged: false})));
   }
@@ -47,7 +53,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <MainMenu token={this.state.token} setToken={this.setToken} logged={this.state.logged} logout={this.Logout} />
-        <Router login={this.login} logout={this.Logout} logged={this.state.logged} token={this.state.token}/>
+        <Router id={cookie.load('id')} login={this.login} logout={this.Logout} logged={this.state.logged} token={this.state.token}/>
       </div>
     );
   }
