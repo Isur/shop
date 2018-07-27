@@ -1,6 +1,9 @@
 import React from 'react';
 import { Segment, Container, Button, Form, Input, Divider, Message } from 'semantic-ui-react';
 import axios from 'axios';
+import cookie from 'react-cookies';
+import { Redirect } from 'react-router';
+
 const style = {
     color: 'silver',
     fontWeight: 'bolder',
@@ -8,8 +11,8 @@ const style = {
 }
 
 class Login extends React.Component{
-constructor(){
-    super();
+constructor(props){
+    super(props);
     this.state = {
         login: '',
         password: '',
@@ -18,6 +21,7 @@ constructor(){
         error: false,
         auth: false
     }
+    console.log(props);
     this.passwordChange = this.passwordChange.bind(this);
     this.loginChange = this.loginChange.bind(this);
 }
@@ -27,7 +31,10 @@ login = () => {
         login: this.state.login,
         password: this.state.password
     }).then(login => {
-        this.setState({auth: login.data.login, error: !login.data.login});
+        this.setState({auth: login.data.success, error: !login.data.success});
+        cookie.save('token', `Bearer ${login.data.token}`);
+        this.props.login();
+        
     })
 }
 
@@ -44,6 +51,9 @@ passwordChange = (event) => {
 }
 
     render(){
+        if(this.state.auth === true){
+            return <Redirect push to="/home" />
+        }
         return(
             <Segment inverted>
             <Container text textAlign="center">

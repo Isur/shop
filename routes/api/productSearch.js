@@ -59,7 +59,7 @@ getType = (cat) =>{
 // SEARCH
 router.get('/search/byId/:id', (req,res)=>{
     const id = req.params.id;
-    Item.findById(id).then(resp => res.json(resp));
+    Item.findById(id).then(resp => res.json(resp)).catch(err => res.json({success: "fail"}));
 });
 
 router.get('/search/:cat/', (req,res)=>{

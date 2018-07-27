@@ -22,6 +22,9 @@ componentDidMount(){
 getItem(){
     axios.get(`/products/search/byId/${this.queryParams.id}`).then(
         res => {
+            if(!res.data){
+                res.data = [];
+            }
             this.setState({
                 name: res.data.name,
                 value: res.data.value,

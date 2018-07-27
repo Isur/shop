@@ -2,6 +2,8 @@ import React from 'react';
 import { Segment, Container, Button, Form, Input, Divider, TextArea, Dropdown, Message } from 'semantic-ui-react';
 import axios from 'axios';
 import Loading from './Loading';
+import cookie from 'react-cookies';
+import { Redirect } from 'react-router';
 const style = {
     color: 'silver',
     fontWeight: 'bolder',
@@ -45,6 +47,7 @@ class AddNewItem extends React.Component{
    componentDidMount(){
     this.isError();
    }
+    
 
    types = [
         {text: "Kamera", value:"camera"},
@@ -149,17 +152,24 @@ class AddNewItem extends React.Component{
         this.setState({sent:false}, async () => {
             if(this.isError() === false){
                 this.setState({sending: true}, async () => {
-                    axios.post('/api/addItem',{
-                        name: this.state.name,
-                        description: this.state.shortDescription,
-                        longDescription: this.state.longDescription,
-                        value: this.state.value,
-                        producer: this.state.producer,
-                        imageLink: this.state.image,
-                        itemType: this.state.type
+                    axios({
+                        method:'post',
+                        url:'/api/addItem',
+                        data:{
+                            name: this.state.name,
+                            description: this.state.shortDescription,
+                            longDescription: this.state.longDescription,
+                            value: this.state.value,
+                            producer: this.state.producer,
+                            imageLink: this.state.image,
+                            itemType: this.state.type
+                        },
+                        headers: {'Authorization' : cookie.load('token')}
                     }).then(res => {
                         this.clearForm(); 
                         this.setState({sent:true, sending: false})
+                    }).catch(err => {
+                        this.setState({sending: false, errorMessage: "Zaloguj się!", error: true })
                     });
                 });
             }
@@ -167,6 +177,9 @@ class AddNewItem extends React.Component{
     }
 
     render(){
+        if(!cookie.load('token'))
+            return <Redirect path to="/home" />
+        
         return(
             <Segment inverted>
             <Container text textAlign="center">

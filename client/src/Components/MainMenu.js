@@ -1,6 +1,8 @@
 import React from 'react';
 import { Icon, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+
+
 const MenuItem = (props) => {
     return(
         <Menu.Item> 
@@ -17,9 +19,10 @@ const MainMenu = (props) => {
         <Menu icon="labeled" inverted>
             <MenuItem funcParam="home" ButtonText="Home"  icon="home"/>
             <MenuItem funcParam="products" ButtonText="Produkty" icon="cart"/>
-            <MenuItem funcParam="products/add" ButtonText="Dodaj Produkt" icon="plus"/>
-            <MenuItem funcParam="login" ButtonText="Login" icon="sign in"/>
-            <MenuItem funcParam="register" ButtonText="Rejestracja" icon="signup"/>
+            {props.logged && <MenuItem funcParam="products/add" ButtonText="Dodaj Produkt" icon="plus"/>}
+            {!props.logged && <MenuItem funcParam="login" ButtonText="Login" icon="sign in"/>}
+            {!props.logged && <MenuItem funcParam="register" ButtonText="Rejestracja" icon="signup"/>}
+            {props.logged && <MenuItem funcParam="logout" ButtonText="Wyloguj" icon="log out"/>}
         </Menu> 
     )
 }

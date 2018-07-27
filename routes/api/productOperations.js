@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-
+const exjwt = require('express-jwt');
+const jwtMW = exjwt({
+    secret: 'keyboard cat 4 ever'
+  });
 const Item = require('../../models/Item');
 
 // DELETE ITEM
 router.delete('/delete/:id', (req,res) => {
-    Item.findById(req.params.id)
+    Item.findByIdAndRemove(req.params.id)
         .then(item => {
             item.remove().then(() => res.json({success:true})).catch(err =>res.status(404).json({success: false}));
         });
@@ -16,7 +19,7 @@ router.delete('/delete/:id', (req,res) => {
      });
 
 // ADD ITEM
-router.post('/addItem', (req,res) => {
+router.post('/addItem', jwtMW, (req,res) => {
     const newItem = new Item({
         name: req.body.name,
         description: req.body.description,

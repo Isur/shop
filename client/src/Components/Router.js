@@ -7,16 +7,18 @@ import NotFound from './NotFound';
 import Products from './Products';
 import Item from './Item';
 import Login from './Login';
+import Logout from './Logout';
 import Register from './Register';
 import AddNew from './AddNew';
-const Router = () => {
+const Router = (props) => {
     return(
         <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/home" component={Home} />
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/login" render={() => <Login login={props.login}/>}/>
+            <Route exact path="/logout" render={() => <Logout logout={props.logout}/>}/>
             <Route exact path="/register" component={Register} />
-            <Route exact path="/products/add" component={AddNew} />
+            <Route exact path="/products/add" component={AddNew}  token={props.token}/>
             <Route exact path="/products" render={() => <Products category="all"/>} />
             <Route exact path="/products/item/" render={() => <Item />} />
             <Route exact path='/products/all' render={() => <Products key={'all'} category="all"/>} />

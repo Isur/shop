@@ -48,5 +48,5 @@ router.delete('/delete/:id', (req,res) => {
 // IS LOGGED
      router.get('/logged', jwtMW, (req,res) => {
         res.json({logged: true});
-     })
+     });
 module.exports = router;
