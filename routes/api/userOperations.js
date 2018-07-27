@@ -6,7 +6,7 @@ const User = require('../../models/User');
 const jwtMW = exjwt({
     secret: 'keyboard cat 4 ever'
   });
-// DELETE ITEM
+// DELETE USER
 router.delete('/delete/:id', (req,res) => {
     User.findById(req.params.id)
         .then(user => {
@@ -38,7 +38,7 @@ router.delete('/delete/:id', (req,res) => {
             .then(user => {
                 if(user.validPassword(req.body.password)){
                     let token = jwt.sign({login:user.login, mail: user.mail }, 'keyboard cat 4 ever', {expiresIn: 129600});
-                    res.json({success: true, err: null, token});
+                    res.json({success: true, err: null, token, id:user._id});
                 } else {
                     res.status(401).json({success: false, token: null, err: "failed"});
                 }
@@ -49,4 +49,9 @@ router.delete('/delete/:id', (req,res) => {
      router.get('/logged', jwtMW, (req,res) => {
         res.json({logged: true});
      });
+
+// FIND USER
+     router.get('/user/:id', jwtMW, (req,res) => {
+         User.findById(req.params.id).then(user => res.json(user));
+     })
 module.exports = router;
