@@ -32,6 +32,21 @@ router.delete('/delete/:id', (req,res) => {
 
          newUser.save().then(resp => res.json(resp));
      });
+// UPDATE USER 
+     router.post('/updateUser', (req,res) => {
+        User.findById(req.body.id).then(user => {
+            if(req.body.firstName)
+                user.firstName = req.body.firstName;
+            if(req.body.lastName)
+                user.lastName = req.body.lastName;
+            if(req.body.mail)
+                user.mail = req.body.mail;
+            if(req.body.password)
+                user.setPassword(req.body.password);
+            
+            user.save().then(response => res.json(response));
+        })
+    })
 // LOGIN
      router.post('/login', (req,res) => {
          User.findOne({login: req.body.login})

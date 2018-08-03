@@ -33,6 +33,7 @@
     "express-jwt": "^5.3.1",
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.3.0",
+    "ldapjs": "^1.0.2",
     "mongoosastic": "^4.4.1",
     "mongoose": "^5.2.3",
     "mongoose-paginate": "^5.0.3",

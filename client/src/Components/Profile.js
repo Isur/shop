@@ -1,13 +1,8 @@
 import React from 'react';
-import { Icon, Card } from 'semantic-ui-react';
+import { Icon, Card, Button, Segment, Form } from 'semantic-ui-react';
 import axios from 'axios';
 import cookie from 'react-cookies';
-const extra = (
-    <a>
-      <Icon name='user' />
-      16 Friends
-    </a>
-  )
+
 const ProfileCard = (props) => (
     <Card
     centered
@@ -15,7 +10,6 @@ const ProfileCard = (props) => (
       header={`${props.firstName} ${props.lastName}`}
       meta={props.login}
       description={props.mail}
-      //extra={extra}
     />
   )
 
@@ -27,8 +21,15 @@ class Profile extends React.Component{
             login: '',
             firstName: '',
             lastName: '',
-            mail: ''
+            mail: '',
+            editMode: false,
+            newFirstName: '',
+            newLastName: '',
+            newMail: '',
+            newPassword: ''
         }
+        this.onClickEdit = this.onClickEdit.bind(this);
+        this.inputChange = this.inputChange.bind(this);
     }
 
 
@@ -43,9 +44,48 @@ class Profile extends React.Component{
         }))
     }
 
+    onClickEdit = (event) => {
+        this.setState({
+            editMode: !this.state.editMode
+        })
+    }
+
+    onClickModify = () => {
+        axios({
+            method: 'post', 
+            url:`/user/updateUser`,
+            headers: {
+                'Authorization' : cookie.load('token')
+            },
+            data:{
+                id: cookie.load('id'),
+                firstName: this.state.newFirstName,
+                lastName: this.state.newLastName,
+                mail: this.state.newMail,
+                password: this.state.newPassword
+            }
+        }).then(res => {
+            if(res.status===200)alert('Zrobione!');
+            this.setState({
+                editMode: false,
+                newFirstName: '',
+                newLastName: '',
+                newMail: '',
+                newPassword: ''
+            })
+        })
+    }
+
+    inputChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
     render(){
         this.getData();
         return (
+            <Segment inverted>
          <ProfileCard 
             id={this.state.id}
             login={this.state.login}
@@ -53,6 +93,17 @@ class Profile extends React.Component{
             lastName={this.state.lastName}
             mail={this.state.mail}
          />
+         <Button negative={!this.state.editMode} positive={this.state.editMode} onClick={this.onClickEdit}> Edytuj dane! </Button>
+         {this.state.editMode && <div> 
+             <Form>
+                 <Form.Input placeholder="Nowe imie..." name="newFirstName" onChange={this.inputChange} value={this.state.newFirstName}/>
+                 <Form.Input placeholder="Nowe nazwisko..." name="newLastName" onChange={this.inputChange} value={this.state.newLastName}/>
+                 <Form.Input placeholder="Nowy mail..." name="newMail" onChange={this.inputChange} value={this.state.newMail}/>
+                 <Form.Input type="password" placeholder="Nowe hasło..."name="newPassword" onChange={this.inputChange} value={this.state.newPassword}/>
+                 <Button onClick={this.onClickModify}> Potwierdź nowe dane. </Button>
+             </Form>
+        </div>}
+         </Segment>
         );
     }
 }
