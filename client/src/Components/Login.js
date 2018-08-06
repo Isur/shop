@@ -3,7 +3,8 @@ import { Segment, Container, Button, Form, Input, Divider, Message } from 'seman
 import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-
+// language
+import lang from './language/lang';
 const style = {
     color: 'silver',
     fontWeight: 'bolder',
@@ -56,25 +57,25 @@ passwordChange = (event) => {
         return(
             <Segment inverted>
             <Container text textAlign="center">
-                {this.state.auth && <Message positive> ZALOGOWANO! </Message>}
-                {this.state.error && <Message negative> Błędne dane logowania! </Message>}
+                {this.state.auth && <Message positive> {lang.messages.login}</Message>}
+                {this.state.error && <Message negative> {lang.errors.loginFailed} </Message>}
             <Form inverted>
                 <Divider horizontal />
                  <Form.Field> 
-                     <label style={style}> Login</label>
+                     <label style={style}> {lang.labels.login}</label>
                      <Input 
                         fluid 
                         type="text" 
-                        placeholder="Login..."
+                        placeholder={lang.placeholders.login}
                         onChange={this.loginChange}    
                     /> 
                 </Form.Field>
                 <Form.Field> 
-                     <label style={style}> Hasło</label>
+                     <label style={style}> {lang.labels.password}</label>
                      <Input 
                         fluid 
                         type="password" 
-                        placeholder="Hasło..."
+                        placeholder={lang.placeholders.password}
                         onChange={this.passwordChange}    
                     /> 
                 </Form.Field>
@@ -84,7 +85,7 @@ passwordChange = (event) => {
                         primary 
                         fluid
                         onClick={this.login}    
-                    > Login </Button> 
+                    > {lang.buttons.login} </Button> 
                 </Form.Field>
             </Form>
             </Container>

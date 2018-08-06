@@ -1,6 +1,9 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+// language
+import lang from './language/lang';
+
 const MenuItem = (props) => {
     return(
         <Menu.Item> 
@@ -17,11 +20,11 @@ const MenuItem = (props) => {
 const MyMenu = (props) => {
     return(
         <Menu inverted fluid widths={6} size="massive">
-            <MenuItem funcParam="all" ButtonText="Wszystko" onClick={props.selectCategory} />            
-            <MenuItem funcParam="cameras" ButtonText="Kamery" onClick={props.selectCategory} />            
-            <MenuItem funcParam="tvs" ButtonText="TV" onClick={props.selectCategory} />            
-            <MenuItem funcParam="computers" ButtonText="Komputery" onClick={props.selectCategory} />            
-            <MenuItem funcParam="phones" ButtonText="Telefony" onClick={props.selectCategory} />
+            <MenuItem funcParam="all" ButtonText={lang.productTypes.all} onClick={props.selectCategory} />            
+            <MenuItem funcParam="cameras" ButtonText={lang.productTypes.cameras} onClick={props.selectCategory} />            
+            <MenuItem funcParam="tvs" ButtonText={lang.productTypes.tvs} onClick={props.selectCategory} />            
+            <MenuItem funcParam="computers" ButtonText={lang.productTypes.computers} onClick={props.selectCategory} />            
+            <MenuItem funcParam="phones" ButtonText={lang.productTypes.phones} onClick={props.selectCategory} />
         </Menu> 
     );
 }

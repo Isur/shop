@@ -3,6 +3,10 @@ import { Icon, Card, Button, Segment, Form } from 'semantic-ui-react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 
+// language
+import lang from './language/lang';
+
+
 const ProfileCard = (props) => (
     <Card
     centered
@@ -93,14 +97,14 @@ class Profile extends React.Component{
             lastName={this.state.lastName}
             mail={this.state.mail}
          />
-         <Button negative={!this.state.editMode} positive={this.state.editMode} onClick={this.onClickEdit}> Edytuj dane! </Button>
+         <Button negative={!this.state.editMode} positive={this.state.editMode} onClick={this.onClickEdit}> {lang.buttons.editData} </Button>
          {this.state.editMode && <div> 
              <Form>
-                 <Form.Input placeholder="Nowe imie..." name="newFirstName" onChange={this.inputChange} value={this.state.newFirstName}/>
-                 <Form.Input placeholder="Nowe nazwisko..." name="newLastName" onChange={this.inputChange} value={this.state.newLastName}/>
-                 <Form.Input placeholder="Nowy mail..." name="newMail" onChange={this.inputChange} value={this.state.newMail}/>
-                 <Form.Input type="password" placeholder="Nowe hasło..."name="newPassword" onChange={this.inputChange} value={this.state.newPassword}/>
-                 <Button onClick={this.onClickModify}> Potwierdź nowe dane. </Button>
+                 <Form.Input placeholder={lang.placeholders.firstName} name="newFirstName" onChange={this.inputChange} value={this.state.newFirstName}/>
+                 <Form.Input placeholder={lang.placeholders.lastName} name="newLastName" onChange={this.inputChange} value={this.state.newLastName}/>
+                 <Form.Input placeholder={lang.placeholders.mail} name="newMail" onChange={this.inputChange} value={this.state.newMail}/>
+                 <Form.Input type="password" placeholder={lang.placeholders.password} name="newPassword" onChange={this.inputChange} value={this.state.newPassword}/>
+                 <Button onClick={this.onClickModify}> {lang.buttons.confirmNewData} </Button>
              </Form>
         </div>}
          </Segment>

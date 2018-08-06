@@ -3,6 +3,9 @@ import { Message, Card, Icon, Image, Grid , Segment, Button} from 'semantic-ui-r
 import image from '../images/placeholder-avatar.jpg';
 import { Link } from 'react-router-dom';
 
+// language
+import lang from './language/lang';
+
 const Item = (props) => {
     return(
         <Grid.Column mobile={16} tablet={8} computer={3} >
@@ -51,7 +54,7 @@ const Items = (props) => {
                 ))}
             </Grid>
                     {(!props.items || props.items.length === 0) && 
-                    <Message size="massive"> Na tej stronie nie ma produktów.</Message>}
+                    <Message size="massive"> {lang.errors.noProducts} </Message>}
         </Segment>
     );
 }

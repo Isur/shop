@@ -4,6 +4,11 @@ import axios from 'axios';
 import Loading from './Loading';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
+
+// language
+import lang from './language/lang';
+
+
 const style = {
     color: 'silver',
     fontWeight: 'bolder',
@@ -27,10 +32,10 @@ class AddNewItem extends React.Component{
         valueError: true,
         producerError: true,
         typeError: true,
-        errorMessage: 'Wypełnij poprawnie wszystkie pola.',
+        errorMessage: lang.errors.fillEverything,
         error: false,
         sent: false,
-        sentMessage: 'Dodano produkt',
+        sentMessage: lang.messages.productAdded,
         sending: false,
     }
     this.submit = this.submit.bind(this);
@@ -50,10 +55,10 @@ class AddNewItem extends React.Component{
     
 
    types = [
-        {text: "Kamera", value:"camera"},
-        {text: "Telefon", value:"phone"},
-        {text: "Komputer", value:"computer"},
-        {text: "TV", value:"tv"},
+        {text: lang.productTypes.camera, value:"camera"},
+        {text: lang.productTypes.phone, value:"phone"},
+        {text: lang.productTypes.computer, value:"computer"},
+        {text: lang.productTypes.tv, value:"tv"},
     ]
     
     isError = () =>{
@@ -169,7 +174,7 @@ class AddNewItem extends React.Component{
                         this.clearForm(); 
                         this.setState({sent:true, sending: false})
                     }).catch(err => {
-                        this.setState({sending: false, errorMessage: "Zaloguj się!", error: true })
+                        this.setState({sending: false, errorMessage: lang.errors.logIn, error: true })
                     });
                 });
             }
@@ -187,79 +192,79 @@ class AddNewItem extends React.Component{
             <Form >
                 <Divider horizontal />
                  <Form.Field> 
-                     <label style={style}> Nazwa {this.state.nameError && <span style={{color: 'red'}}>- Wypełnij to pole! </span>}</label>
+                     <label style={style}> {lang.labels.name} {this.state.nameError && <span style={{color: 'red'}}> - {lang.errors.fillField} </span>}</label>
                      <Input 
                         error={this.state.nameError} 
                         fluid 
                         type="text" 
-                        placeholder="Nazwa..." 
+                        placeholder={lang.placeholders.name} 
                         onChange={this.validateName}
                         value={this.state.name}
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Krótki opis {this.state.shortDescriptionError && <span style={{color: 'red'}}>- Wypełnij to pole! </span>} </label>
+                    <label style={style}> {lang.labels.shortDescription} {this.state.shortDescriptionError && <span style={{color: 'red'}}>- {lang.errors.fillField} </span>} </label>
                     <Input 
                         error={this.state.shortDescriptionError} 
                         fluid  
                         type="text" 
-                        placeholder="Krótki opis..." 
+                        placeholder={lang.placeholders.shortDescription}
                         onChange={this.validateShortDescription}
                         value={this.state.shortDescription}
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Pełny opis {this.state.longDescriptionError && <span style={{color: 'red'}}>- Wypełnij to pole! </span>}</label>
+                    <label style={style}> {lang.labels.longDescription} {this.state.longDescriptionError && <span style={{color: 'red'}}>- {lang.errors.fillField} </span>}</label>
                     <TextArea 
                         error={this.state.longDescriptionError} 
                         fluid  
                         type="text" 
-                        placeholder="Pełny opis..." 
+                        placeholder={this.state.shortDescriptionError}  
                         onChange={this.validateLongDescription}
                         value={this.state.longDescription}
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Cena {this.state.valueError && <span style={{color: 'red'}}>- Wypełnij to pole wartością liczbową! </span>}</label>
+                    <label style={style}> {lang.labels.value} {this.state.valueError && <span style={{color: 'red'}}>- {lang.errors.fillFieldNumber} </span>}</label>
                     <Input 
                         error={this.state.valueError} 
                         fluid  
                         type="number" 
-                        placeholder="Cena..."
+                        placeholder={lang.placeholders.value}
                         onChange={this.validateValue}
                         value={this.state.value}    
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Producent {this.state.producerError && <span style={{color: 'red'}}>- Wypełnij to pole! </span>} </label>
+                    <label style={style}> {lang.labels.producer} {this.state.producerError && <span style={{color: 'red'}}>- {lang.errors.fillField} </span>} </label>
                     <Input 
                         error={this.state.producerError} 
                         fluid  
                         type="text" 
-                        placeholder="Producent..."
+                        placeholder={lang.placeholders.producer}
                         onChange={this.validateProducer}
                         value={this.state.producer}
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Link do obrazka {this.state.imageError && <span style={{color: 'red'}}>- Wypełnij poprawnie to pole! </span>} </label>
+                    <label style={style}> {lang.labels.imageURL}{this.state.imageError && <span style={{color: 'red'}}>- {lang.errors.fillField} </span>} </label>
                     <Input 
                         error={this.state.imageError} 
                         fluid  
                         type="text" 
-                        placeholder="Link do obrazka, puste = obrazek domyślny..." 
+                        placeholder={lang.placeholders.imageURL}
                         onChange={this.validateImage}
                         value={this.state.image}
                     /> 
                 </Form.Field>
                 <Form.Field>
-                    <label style={style}> Typ {this.state.typeError && <span style={{color: 'red'}}>- Wybierz typ! </span>} </label>
+                    <label style={style}> {lang.labels.type} {this.state.typeError && <span style={{color: 'red'}}>- {lang.errors.selectType} </span>} </label>
                     <Dropdown 
                         error={this.state.typeError} 
                         fluid 
                         selection 
                         options={this.types} 
-                        placeholder="Typ..." 
+                        placeholder={lang.placeholders.type} 
                         onChange={this.validateType}
                         value={this.state.type}    
                     /> 
@@ -271,7 +276,7 @@ class AddNewItem extends React.Component{
                 {this.state.sent && <Message positive> {this.state.sentMessage} </Message>}
                 <Divider horizontal/>
                 <Form.Field> 
-                     <Button primary fluid onClick={this.submit}> Dodaj </Button> 
+                     <Button primary fluid onClick={this.submit}> {lang.buttons.add} </Button> 
                 </Form.Field>
             </Form>
             </Container>

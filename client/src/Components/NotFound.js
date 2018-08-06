@@ -1,9 +1,11 @@
 import React from 'react';
 import { Message } from 'semantic-ui-react';
+// language
+import lang from './language/lang';
 
 const NotFound = () => {
     return(
-        <Message size="huge"> Taka strona nie istnieje!</Message>
+        <Message size="huge"> {lang.errros.pageNotFound} </Message>
     )
 }
 

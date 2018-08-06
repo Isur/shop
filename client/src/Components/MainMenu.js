@@ -1,8 +1,10 @@
 import React from 'react';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Icon, Menu, Flag } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import cookie from 'react-cookies';
 
+// language
+import lang from './language/lang';
 
 const MenuItem = (props) => {
     return(
@@ -18,14 +20,15 @@ const MenuItem = (props) => {
 const MainMenu = (props) => {
     return(
         <Menu icon="labeled" inverted>
-            <MenuItem funcParam="home" ButtonText="Home"  icon="home"/>
-            <MenuItem funcParam="products" ButtonText="Produkty" icon="cart"/>
-            {props.logged && <MenuItem funcParam="products/add" ButtonText="Dodaj Produkt" icon="plus"/>}
-            {!props.logged && <MenuItem funcParam="login" ButtonText="Login" icon="sign in"/>}
-            {!props.logged && <MenuItem funcParam="register" ButtonText="Rejestracja" icon="signup"/>}
-            {props.logged && <MenuItem funcParam="logout" ButtonText="Wyloguj" icon="log out"/>}
-            {props.logged && <MenuItem funcParam="profile" ButtonText="Profil" icon="user"/>}
-            {props.logged && cookie.load('type')==='admin' && <MenuItem funcParam="users" ButtonText="Użytkownicy" icon="users"/>}
+            <MenuItem funcParam="home" ButtonText={lang.buttons.homePage}  icon="home"/>
+            <MenuItem funcParam="products" ButtonText={lang.buttons.products} icon="cart"/>
+            {props.logged && <MenuItem funcParam="products/add" ButtonText={lang.buttons.addProduct} icon="plus"/>}
+            {!props.logged && <MenuItem funcParam="login" ButtonText={lang.buttons.login} icon="sign in"/>}
+            {!props.logged && <MenuItem funcParam="register" ButtonText={lang.buttons.register} icon="signup"/>}
+            {props.logged && <MenuItem funcParam="logout" ButtonText={lang.buttons.logout} icon="log out"/>}
+            {props.logged && <MenuItem funcParam="profile" ButtonText={lang.buttons.profile} icon="user"/>}
+            {props.logged && cookie.load('type')==='admin' && <MenuItem funcParam="users" ButtonText={lang.buttons.users} icon="users"/>}
+            <Menu.Item onClick={props.changeLanguage}position="right"> <Link to="/"> {cookie.load('language') === 'eng' && <Flag name="gb" />} {cookie.load('language') === 'pol' && <Flag name="pl" />}  </Link> </Menu.Item>
         </Menu> 
     )
 }
