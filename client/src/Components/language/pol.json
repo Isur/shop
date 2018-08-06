@@ -1,0 +1,95 @@
+{
+    "buttons": {
+        "add": "Dodaj",
+        "login": "Login",
+        "logout": "Wyloguj",
+        "register": "Rejestracja",
+        "homePage": "Home",
+        "products": "Produkty",
+        "addProduct": "Dodaj Produkt",
+        "profile": "Profil",
+        "users": "Użytkownicy",
+        "confirmNewData": "Potwierdź nowe dane",
+        "editData": "Edytuj dane"
+    },
+    "labels":{
+        "name": "Nazwa",
+        "shortDescription": "Krótki opis",
+        "longDescription": "Pełny opis",
+        "value": "Cena",
+        "producer": "Producent",
+        "imageURL": "Link do obrazka",
+        "type": "Typ",
+        "category": "Kategoria",
+        "page": "Strona",
+        "login": "Login",
+        "password": "Hasło",
+        "mail": "Mail",
+        "firstName": "Imię",
+        "lastName": "Nazwisko"
+    },
+    "errors":{
+        "fillEverything":"Wypełnij poprawnie wszystkie pola.",
+        "logIn": "Zaloguj się!",
+        "fillField": "Wypełnij to pole!",
+        "fillFieldNumber": "Wypełnij to pole wartością liczbową!",
+        "selectType": "Wybierz typ!",
+        "noProducts": "Na tej stronie nie ma produktów!",
+        "loginFailed": "Błędne dane logowania!",
+        "pageNotFound": "Taka strona nie istnieje!",
+        "loginValidation": "Wpisz login min 4 znaki",
+        "passwordValidation": "Wpisz hasło min 6 znaków",
+        "mailValidation": "Wpisz prawidłowy adres mail!",
+        "firstNameValidation": "Wpisz swoje imię!",
+        "lastNameValidation": "Wpisz swoje nazwisko!"
+    },
+    "messages":{
+        "productAdded": "Dodano produkt.",
+        "userAdded": "Użytkownik dodany.",
+        "loading": "Wczytywanie danych.",
+        "pleaseWait": "Proszę czekać.",
+        "login": "Zalogowano!",
+        "logout": "Wylogowano!"
+    },
+    "placeholders":{
+        "name": "Nazwa...",
+        "shortDescription": "Krótki opis...",
+        "longDescription": "Pełny opis...",
+        "value": "Cena...",
+        "producer": "Producent...",
+        "imageURL": "Link do obrazka...",
+        "type": "Typ...",
+        "search": "Szukaj...",
+        "sorting": "Sortowanie...",
+        "login": "Login...",
+        "password": "Hasło...",
+        "firstName": "Imię...",
+        "lastName": "Nazwisko...",
+        "mail": "Mail..."
+    },
+    "productTypes":{
+        "camera": "Kamera",
+        "cameras": "Kamery",
+        "phone": "Telefon",
+        "phones": "Telefony",
+        "computer": "Komputer",
+        "computers": "Komputery",
+        "tv": "Telewizor",
+        "tvs": "Telewizory",
+        "all": "Wszystko"
+    },
+    "sortingOptions":{
+        "valueDESC": "Cena malejąco",
+        "valueASC": "Cena rosnąco",
+        "nameDESC": "Nazwa malejąco",
+        "nameASC": "Nazwa rosnąco",
+        "producerDESC": "Producent malejąco",
+        "producerASC": "Producent rosnąco"
+    },
+    "homePage":{
+        "aboutUs": "O NAS",
+        "selling": "CO SPRZEDAJEMY",
+        "contact": "KONTAKT",
+        "shop": "Sklep"
+    }
+}

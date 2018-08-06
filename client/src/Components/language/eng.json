@@ -1,0 +1,95 @@
+{
+    "buttons": {
+        "add": "Add",
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Register",
+        "homePage": "Home",
+        "products": "Products",
+        "addProduct": "Add product",
+        "profile": "Profile",
+        "users": "Users",
+        "confirmNewData": "Confirm new data",
+        "editData": "Edit"
+    },
+    "labels":{
+        "name": "Name",
+        "shortDescription": "Short description",
+        "longDescription": "Long description",
+        "value": "Value",
+        "producer": "Producer",
+        "imageURL": "Image URL",
+        "type": "Type",
+        "category": "Category",
+        "page": "Page",
+        "login": "Login",
+        "password": "Password",
+        "mail": "Mail",
+        "firstName": "First Name",
+        "lastName": "Last Name"
+    },
+    "errors":{
+        "fillEverything":"Fill correctly each field",
+        "logIn": "Log In!",
+        "fillField": "Fill this field!",
+        "fillFieldNumber": "Fill this field with number!",
+        "selectType": "Select type!",
+        "noProducts": "No products on this page!",
+        "loginFailed": "Wrong login or passowrd!",
+        "pageNotFound": "This page does not exists!",
+        "loginValidation": "Type your login with at least 4 characters!",
+        "passwordValidation": "Type your password with at least 6 characters!",
+        "mailValidation": "Type correct mail address!",
+        "firstNameValidation": "Type your name!",
+        "lastNameValidation": "Type your last name!"
+    },
+    "messages":{
+        "productAdded": "Product added.",
+        "userAdded": "User added.",
+        "loading": "Loading.",
+        "pleaseWait": "Please wait.",
+        "login": "You have log in!",
+        "logout": "You have log out!"
+    },
+    "placeholders":{
+        "name": "Name...",
+        "shortDescription": "Short description...",
+        "longDescription": "Long description...",
+        "value": "Value...",
+        "producer": "Producer...",
+        "imageURL": "Image URL...",
+        "type": "Type...",
+        "search": "Search...",
+        "sorting": "Sort...",
+        "login": "Login...",
+        "password": "Password...",
+        "firstName": "First name...",
+        "lastName": "Last name...",
+        "mail": "Mail..."
+    },
+    "productTypes":{
+        "camera": "Camera",
+        "cameras": "Cameras",
+        "phone": "Phone",
+        "phones": "Phones",
+        "computer": "Computer",
+        "computers": "Computers",
+        "tv": "TV",
+        "tvs": "TVS",
+        "all": "All"
+    },
+    "sortingOptions":{
+        "valueDESC": "Value descending",
+        "valueASC": "Value ascending",
+        "nameDESC": "Name descending",
+        "nameASC": "Name ascending",
+        "producerDESC": "Producer descending",
+        "producerASC": "Produced ascending"
+    },
+    "homePage":{
+        "aboutUs": "ABOUT US",
+        "selling": "SELLING",
+        "contact": "CONTACT",
+        "shop": "SHOP"
+    }
+}

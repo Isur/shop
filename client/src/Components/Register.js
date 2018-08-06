@@ -2,6 +2,10 @@ import React from 'react';
 import { Segment, Container, Button, Form, Input, Divider, Message } from 'semantic-ui-react';
 import axios from 'axios';
 import Loading from './Loading';
+
+// language
+import lang from './language/lang';
+
 const style = {
     color: 'silver',
     fontWeight: 'bolder',
@@ -157,8 +161,8 @@ class Register extends React.Component{
     }
     
     render(){
-        const errorMessage = "Wypełnij poprawnie wszystkie pola.";
-            const sentMessage = "Użytkownik dodany."
+        const errorMessage = lang.errors.fillEverything;
+        const sentMessage = lang.messages.userAdded;
         return(
             <Segment inverted>
             <Container text textAlign="center">
@@ -167,70 +171,70 @@ class Register extends React.Component{
                 <Divider horizontal />
                  <Form.Field> 
                      <label style={style}> 
-                         Login 
+                         {lang.labels.login} 
                          {this.state.loginError && 
-                            <span style={style_error}> - Wpisz login min 4 znaki. </span>}
+                            <span style={style_error}> - {lang.errors.loginValidation} </span>}
                     </label>
                      <Input 
                         fluid 
                         type="text" 
-                        placeholder="Login..."
+                        placeholder={lang.placeholders.login}
                         onChange={this.validateLogin}    
                         value={this.state.login}
                     /> 
                 </Form.Field>
                 <Form.Field> 
                      <label style={style}> 
-                        Hasło
+                        {lang.labels.password}
                         {this.state.passwordError && 
-                            <span style={style_error}> - Wpisz hasło min 6 znaków. </span>}
+                            <span style={style_error}> - {lang.errors.passwordValidation} </span>}
                     </label>
                      <Input 
                         fluid 
                         type="password" 
-                        placeholder="Hasło..."
+                        placeholder={lang.placeholders.password}
                         onChange={this.validatePassword}
                         value={this.state.password}
                     /> 
                 </Form.Field>
                 <Form.Field> 
                      <label style={style}> 
-                         Mail
+                         {lang.labels.mail}
                          {this.state.mailError &&
-                            <span style={style_error}> - Wpisz prawidłowy adres mail </span>}
+                            <span style={style_error}> - {lang.errors.mailValidation} </span>}
                     </label>
                      <Input 
                         fluid  
                         type="mail" 
-                        placeholder="Mail..."
+                        placeholder={lang.placeholders.mail}
                         onChange={this.validateMail}
                         value={this.state.mail}
                     /> 
                 </Form.Field>
                 <Form.Field> 
                     <label style={style}> 
-                         Imię
+                         {lang.labels.firstName}
                          { this.state.firstNameError &&
-                            <span style={style_error} > - Wpisz swoje imie </span>}
+                            <span style={style_error} > - {lang.errors.firstNameValidation} </span>}
                     </label>
                      <Input 
                         fluid 
                         type="text" 
-                        placeholder="Imię..."
+                        placeholder={lang.placeholders.firstName}
                         onChange={this.validateFirstName}
                         value={this.state.firstName}
                     /> 
                 </Form.Field>
                 <Form.Field> 
                     <label style={style}> 
-                         Nazwisko
+                        {lang.labels.lastName}
                          { this.state.lastNameError &&
-                            <span style={style_error} > - Wpisz swoje nazwisko </span>}
+                            <span style={style_error} > - {lang.errors.lastNameValidation} </span>}
                     </label>
                      <Input 
                         fluid 
                         type="text" 
-                        placeholder="Nazwisko..."
+                        placeholder={lang.placeholders.lastName}
                         onChange={this.validateLastName}
                         value={this.state.lastName}
                     /> 
@@ -240,7 +244,7 @@ class Register extends React.Component{
                 {this.state.sent === true && <Message positive> {sentMessage} </Message>}                                
                 <Form.Field> 
                      <label style={style}>&nbsp;</label>
-                     <Button primary fluid onClick={this.submit}> Rejestracja </Button> 
+                     <Button primary fluid onClick={this.submit}> {lang.buttons.register} </Button> 
                 </Form.Field>
             </Form>
             </Container>
