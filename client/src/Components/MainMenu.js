@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import cookie from 'react-cookies';
 
 
 const MenuItem = (props) => {
@@ -24,6 +25,7 @@ const MainMenu = (props) => {
             {!props.logged && <MenuItem funcParam="register" ButtonText="Rejestracja" icon="signup"/>}
             {props.logged && <MenuItem funcParam="logout" ButtonText="Wyloguj" icon="log out"/>}
             {props.logged && <MenuItem funcParam="profile" ButtonText="Profil" icon="user"/>}
+            {props.logged && cookie.load('type')==='admin' && <MenuItem funcParam="users" ButtonText="Użytkownicy" icon="users"/>}
         </Menu> 
     )
 }

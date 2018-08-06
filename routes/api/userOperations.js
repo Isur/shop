@@ -7,19 +7,30 @@ const jwtMW = exjwt({
     secret: 'keyboard cat 4 ever'
   });
 // DELETE USER
-router.delete('/delete/:id', (req,res) => {
-    User.findById(req.params.id)
-        .then(user => {
-            user.remove().then(() => res.json({success:true})).catch(err =>res.status(404).json({success: false}));
-        });
+router.delete('/delete/:id', jwtMW, (req,res) => {
+    const token = req.get('Authorization').split(' ')[1]
+    const decoded = jwt.decode(token);
+    if(decoded.type === 'admin'){
+        User.findById(req.params.id)
+            .then(user => {
+                user.remove().then(() => res.json({success:true})).catch(err =>res.status(404).json({success: false}));
+            });
+    } else {
+        res.json({success: false, message: "You are not admin!"});
+    }
     });
 // DELETE ALL - temporary method
     router.delete('/deleteAll', (req,res) =>{
         User.remove({}, () => res.json({suc: true}));
      });
  // GET ALL USERS
-     router.get('/all', (req,res) => {
-        User.find().then(resp => res.json(resp) );
+     router.get('/all', jwtMW, (req,res) => {
+        const token = req.get('Authorization').split(' ')[1]
+        const decoded = jwt.decode(token);
+        if(decoded.type === 'admin')
+            User.find().then(resp => res.json(resp) );
+        else 
+            res.json({success: false, message: "You are not admin!"});
      });
 // ADD NEW USER
      router.post('/addUser', (req,res) => {
@@ -29,6 +40,7 @@ router.delete('/delete/:id', (req,res) => {
          newUser.lastName = req.body.lastName;
          newUser.setPassword(req.body.password);
          newUser.mail = req.body.mail;
+         newUser.type = "user";
 
          newUser.save().then(resp => res.json(resp));
      });
@@ -41,6 +53,8 @@ router.delete('/delete/:id', (req,res) => {
                 user.lastName = req.body.lastName;
             if(req.body.mail)
                 user.mail = req.body.mail;
+            if(req.body.type)
+                user.type = req.body.type;
             if(req.body.password)
                 user.setPassword(req.body.password);
             
@@ -52,8 +66,8 @@ router.delete('/delete/:id', (req,res) => {
          User.findOne({login: req.body.login})
             .then(user => {
                 if(user.validPassword(req.body.password)){
-                    let token = jwt.sign({login:user.login, mail: user.mail }, 'keyboard cat 4 ever', {expiresIn: 129600});
-                    res.json({success: true, err: null, token, id:user._id});
+                    let token = jwt.sign({id:user._id, type: user.type }, 'keyboard cat 4 ever', {expiresIn: 129600});
+                    res.json({success: true, err: null, token, id:user._id, type: user.type});
                 } else {
                     res.status(401).json({success: false, token: null, err: "failed"});
                 }

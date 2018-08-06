@@ -14,6 +14,35 @@ selectType = (numberOfItem, amountOfItems) => {
 }
 
 checkAndFillDatabase = (howMuch) => {
+    User.find().then(val => {
+        console.log(val.length);
+        if(val.length === 0){
+            let user = new User();
+            user.firstName = "admin";
+            user.lastName = "admin";
+            user.login = "admin";
+            user.setPassword("admin");
+            user.mail = "admin@admin.admin";
+            user.type = "admin";
+            
+            user.save();
+
+            for(let i = 1; i <=howMuch/20 - 1; i++){
+                let user = new User();
+                user.firstName = faker.fake("{{name.firstName}}");
+                user.lastName = faker.fake("{{name.lastName}}");
+                user.mail = faker.fake("{{internet.email}}");
+                user.login = faker.fake("{{internet.userName}}");
+                user.setPassword("password");
+                user.type = 'user';
+                
+                user.save();
+            }
+
+        }
+            
+    })
+
     Item.find().then(val => {
         console.log(val.length);
         if(val.length !== 0)

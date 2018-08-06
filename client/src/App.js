@@ -32,13 +32,13 @@ class App extends React.Component {
     this.isLogged();
   }
 
-  login = (token, id) => {
+  login = (token, id, type) => {
     cookie.save(
       'token', 
       `Bearer ${token}`, 
     );
     cookie.save('id', id);
-    
+    cookie.save('type', type);    
     this.isLogged();
   }
 

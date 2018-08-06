@@ -11,8 +11,9 @@ import Logout from './Logout';
 import Register from './Register';
 import AddNew from './AddNew';
 import Profile from './Profile';
+import Users from './Users';
+// ROUTER
 const Router = (props) => {
-    console.log(props.id);
     return(
         <Switch>
             <Route exact path="/" component={Home}/>
@@ -20,7 +21,8 @@ const Router = (props) => {
             <Route exact path="/login" render={() => <Login login={props.login}/>}/>
             <Route exact path="/logout" render={() => <Logout logout={props.logout}/>}/>
             <Route exact path="/register" component={Register} />
-            <Route exact path="/profile" render={() => <Profile id={props.id}/>} />
+            <Route exact path="/profile" render={() => <Profile/>} />
+            <Route exact path="/users" render={() => <Users/>} />
             <Route exact path="/products/add" component={AddNew}  token={props.token}/>
             <Route exact path="/products" render={() => <Products category="all"/>} />
             <Route exact path="/products/item/" render={() => <Item />} />

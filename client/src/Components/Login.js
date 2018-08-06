@@ -32,7 +32,7 @@ login = () => {
         password: this.state.password
     }).then(login => {
         this.setState({auth: login.data.success, error: !login.data.success});
-        this.props.login(login.data.token, login.data.id);
+        this.props.login(login.data.token, login.data.id, login.data.type);
         
     })
 }
