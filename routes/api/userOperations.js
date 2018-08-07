@@ -3,6 +3,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const exjwt = require('express-jwt');
 const User = require('../../models/User');
+const date = require('../../date');
+var logger = require('../../winston');
 const jwtMW = exjwt({
     secret: 'keyboard cat 4 ever'
   });
@@ -42,7 +44,25 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
          newUser.mail = req.body.mail;
          newUser.type = "user";
 
-         newUser.save().then(resp => res.json(resp));
+         newUser.save().then(resp =>{
+            logger.log({
+                level :'info',
+                message: 'Register success',
+                user: req.body.login,
+                date: date.localDateString,
+                time: date.localTimeString,
+            }) 
+            res.json(resp)
+        }).catch(err => {
+            logger.log({
+                level :'error',
+                message: 'Register failed',
+                user: req.body.login,
+                error: err,
+                date: date.localDateString,
+                time: date.localTimeString,
+            }) 
+        });
      });
 // UPDATE USER 
      router.post('/updateUser', (req,res) => {
@@ -67,11 +87,34 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
             .then(user => {
                 if(user.validPassword(req.body.password)){
                     let token = jwt.sign({id:user._id, type: user.type }, 'keyboard cat 4 ever', {expiresIn: 129600});
+                    logger.log({
+                        level :'info',
+                        message: 'Login success',
+                        user: req.body.login,
+                        date: date.localDateString,
+                        time: date.localTimeString,
+                    })
                     res.json({success: true, err: null, token, id:user._id, type: user.type});
                 } else {
+                    logger.log({
+                        level :'error',
+                        message: 'Login failed',
+                        error: "password",
+                        date: date.localDateString,
+                        time: date.localTimeString,
+                    })
                     res.status(401).json({success: false, token: null, err: "failed"});
                 }
-            }).catch(err => res.json({success: false, token: null, err:"failed"}));
+            }).catch(err => {
+                console.log(err);
+                logger.log({
+                    level :'error',
+                    message: 'Login failed',
+                    date: date.localDateString,
+                    time: date.localTimeString,
+                })
+                res.json({success: false, token: null, err:"failed"})
+            });
      })
 
 // IS LOGGED
