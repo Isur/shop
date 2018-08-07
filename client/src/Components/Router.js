@@ -12,6 +12,7 @@ import Register from './Register';
 import AddNew from './AddNew';
 import Profile from './Profile';
 import Users from './Users';
+import Logs from './Logs';
 // ROUTER
 const Router = (props) => {
     return(
@@ -23,6 +24,7 @@ const Router = (props) => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" render={() => <Profile/>} />
             <Route exact path="/users" render={() => <Users/>} />
+            <Route exact path="/logs" render={() => <Logs />} />
             <Route exact path="/products/add" component={AddNew}  token={props.token}/>
             <Route exact path="/products" render={() => <Products category="all"/>} />
             <Route exact path="/products/item/" render={() => <Item />} />

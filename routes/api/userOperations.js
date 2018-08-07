@@ -126,4 +126,5 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
      router.get('/user/:id', jwtMW, (req,res) => {
          User.findById(req.params.id).then(user => res.json(user));
      })
+
 module.exports = router;

@@ -33,10 +33,12 @@ mongoose.connect(db)
 const search = require('./routes/api/productSearch');
 const operations = require('./routes/api/productOperations');
 const users = require('./routes/api/userOperations');
+const logs = require('./routes/api/logs');
 // routes:
 app.use('/products', search);  
 app.use('/api', operations);
 app.use('/user', users);
+app.use('/logs', logs);
 
 app.use(function (err, req, res, next) {
   if (err.name === 'UnauthorizedError') { // Send the error rather than to show it on the console

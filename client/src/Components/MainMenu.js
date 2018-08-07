@@ -28,6 +28,7 @@ const MainMenu = (props) => {
             {props.logged && <MenuItem funcParam="logout" ButtonText={lang.buttons.logout} icon="log out"/>}
             {props.logged && <MenuItem funcParam="profile" ButtonText={lang.buttons.profile} icon="user"/>}
             {props.logged && cookie.load('type')==='admin' && <MenuItem funcParam="users" ButtonText={lang.buttons.users} icon="users"/>}
+            {props.logged && cookie.load('type')==='admin' && <MenuItem funcParam="logs" ButtonText={lang.buttons.logs} icon="book" />}
             <Menu.Item onClick={props.changeLanguage}position="right"> <Link to="/"> {cookie.load('language') === 'eng' && <Flag name="gb" />} {cookie.load('language') === 'pol' && <Flag name="pl" />}  </Link> </Menu.Item>
         </Menu> 
     )

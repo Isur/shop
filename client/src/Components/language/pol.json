@@ -10,7 +10,10 @@
         "profile": "Profil",
         "users": "Użytkownicy",
         "confirmNewData": "Potwierdź nowe dane",
-        "editData": "Edytuj dane"
+        "editData": "Edytuj dane",
+        "logs": "Logi",
+        "combined": "Wszystkie",
+        "error": "Error"
     },
     "labels":{
         "name": "Nazwa",
@@ -91,5 +94,11 @@
         "selling": "CO SPRZEDAJEMY",
         "contact": "KONTAKT",
         "shop": "Sklep"
+    },
+    "logs":{
+        "level": "Typ",
+        "message": "Wiadomość",
+        "date": "Data",
+        "time": "Czas"
     }
 }
