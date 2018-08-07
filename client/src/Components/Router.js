@@ -21,7 +21,7 @@ const Router = (props) => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/login" render={() => <Login login={props.login}/>}/>
             <Route exact path="/logout" render={() => <Logout logout={props.logout}/>}/>
-            <Route exact path="/register" component={Register} />
+            <Route exact path="/register" render={() => <Register notify={props.notify}/>} />
             <Route exact path="/profile" render={() => <Profile/>} />
             <Route exact path="/users" render={() => <Users/>} />
             <Route exact path="/logs" render={() => <Logs />} />

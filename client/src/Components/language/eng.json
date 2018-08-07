@@ -102,5 +102,10 @@
         "message": "Message",
         "date": "Date",
         "time": "Time"
+    },
+    "notifications":{
+        "onLogin": "Welcome back!",
+        "onRegister": "Hello!",
+        "onLogout": "See you later!"
     }
 }

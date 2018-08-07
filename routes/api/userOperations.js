@@ -43,7 +43,7 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
          newUser.setPassword(req.body.password);
          newUser.mail = req.body.mail;
          newUser.type = "user";
-         newUser.permissions.addProduct = false;
+         newUser.permissions.addProducts = false;
 
          newUser.save().then(resp =>{
             logger.log({
@@ -59,10 +59,10 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
                 level :'error',
                 message: 'Register failed',
                 user: req.body.login,
-                error: err,
                 date: date.localDateString,
                 time: date.localTimeString,
             }) 
+            res.json({success: false})
         });
      });
 // UPDATE USER 

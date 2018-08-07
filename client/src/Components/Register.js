@@ -17,8 +17,8 @@ const style_error = {
     fontSize: 'larger'
 }
 class Register extends React.Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             login: '',
             password: '',
@@ -41,6 +41,8 @@ class Register extends React.Component{
         this.validateMail = this.validateMail.bind(this);
         this.validateFirstName = this.validateFirstName.bind(this);
         this.validateLastName = this.validateLastName.bind(this);
+
+        this.notify = props.notify;
     }
 
     isError = () =>{
@@ -152,9 +154,15 @@ class Register extends React.Component{
                         password: this.state.password,
                         mail: this.state.mail
                     }).then(res => {
-                        this.clearForm(); 
-                        this.setState({sent:true, sending: false})
-                    });
+                        if(res.data.success === false){
+                            this.setState({sending: false, error: true})
+                        }else{
+                            this.clearForm(); 
+                            this.setState({sent:true, sending: false});
+                            this.notify(lang.notifications.onRegister);
+                        }
+                    })
+                    .catch(err => console.log(err));
                 });
             }
         });

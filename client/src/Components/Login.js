@@ -2,6 +2,7 @@ import React from 'react';
 import { Segment, Container, Button, Form, Input, Divider, Message } from 'semantic-ui-react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+
 // language
 import lang from './language/lang';
 const style = {
@@ -26,6 +27,8 @@ constructor(props){
     this.loginChange = this.loginChange.bind(this);
 }
 
+
+
 login = () => {
     axios.post('/user/login', {
         login: this.state.login,
@@ -33,7 +36,7 @@ login = () => {
     }).then(login => {
         this.setState({auth: login.data.success, error: !login.data.success});
         this.props.login(login.data.token, login.data.id, login.data.type);
-        
+
     })
 }
 

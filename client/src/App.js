@@ -7,8 +7,11 @@ import Router from './Components/Router';
 // utilities
 import axios from 'axios';
 import cookie from 'react-cookies';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // images, css
 import './App.css';
+import lang from './Components/language/lang';
 
 
 class App extends React.Component {
@@ -30,9 +33,11 @@ class App extends React.Component {
       cookie.save('language', 'pol');
     }
   }
+  notify = (text) => toast(text);
 
   Logout = () => {
     cookie.remove('token');
+    this.notify(lang.notifications.onLogout);
     this.isLogged();
   }
 
@@ -43,6 +48,7 @@ class App extends React.Component {
     );
     cookie.save('id', id);
     cookie.save('type', type);    
+    if(id) this.notify(lang.notifications.onLogin);
     this.isLogged();
   }
   changeLanguage = () =>{
@@ -67,8 +73,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+      <ToastContainer />
         <MainMenu changeLanguage={this.changeLanguage} token={this.state.token} setToken={this.setToken} logged={this.state.logged} logout={this.Logout} />
-        <Router id={cookie.load('id')} login={this.login} logout={this.Logout} logged={this.state.logged} token={this.state.token}/>
+        <Router notify={this.notify}id={cookie.load('id')} login={this.login} logout={this.Logout} logged={this.state.logged} token={this.state.token}/>
       </div>
     );
   }
