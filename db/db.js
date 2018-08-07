@@ -24,7 +24,7 @@ checkAndFillDatabase = (howMuch) => {
             user.setPassword("admin");
             user.mail = "admin@admin.admin";
             user.type = "admin";
-            
+            user.permissions.addProducts = true;
             user.save();
 
             for(let i = 1; i <=howMuch/20 - 1; i++){
@@ -35,7 +35,8 @@ checkAndFillDatabase = (howMuch) => {
                 user.login = faker.fake("{{internet.userName}}");
                 user.setPassword("password");
                 user.type = 'user';
-                
+                user.permissions.addProducts = false;
+
                 user.save();
             }
 

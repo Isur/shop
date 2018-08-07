@@ -86,7 +86,7 @@ class Register extends React.Component{
         this.setState({
             mail: event.target.value
         }, async () => {
-            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.mail) === false){
+            if (/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/.test(this.state.mail) === false){
                 this.setState({mailError: true})
             } else {
                 this.setState({mailError: false});

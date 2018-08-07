@@ -43,6 +43,7 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
          newUser.setPassword(req.body.password);
          newUser.mail = req.body.mail;
          newUser.type = "user";
+         newUser.permissions.addProduct = false;
 
          newUser.save().then(resp =>{
             logger.log({
@@ -127,4 +128,24 @@ router.delete('/delete/:id', jwtMW, (req,res) => {
          User.findById(req.params.id).then(user => res.json(user));
      })
 
+// CHANGE PERMISSIONS 
+     router.post('/permissions/:id', jwtMW, (req,res) => {
+        const permission = req.body.permission;
+        const bool = req.body.bool;
+        const token = req.get('Authorization').split(' ')[1]
+        const decoded = jwt.decode(token);
+        if(decoded.type === 'admin')
+            User.findById(req.params.id).then(user => {
+                switch(permission){
+                    case 'addProducts':
+                        user.permissions.addProducts = bool;
+                        break;
+                    default:
+                        break;
+                }
+                user.save().then((resp) => res.json(resp));
+            });
+        else 
+            res.json({success: false, message: "You are not admin!"});
+     })
 module.exports = router;

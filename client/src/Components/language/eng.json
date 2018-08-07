@@ -13,7 +13,8 @@
         "editData": "Edit",
         "logs": "Logs",
         "combined": "All",
-        "error": "Error"
+        "error": "Error",
+        "addProductPermission": "Can add products"
     },
     "labels":{
         "name": "Name",
@@ -44,7 +45,8 @@
         "passwordValidation": "Type your password with at least 6 characters!",
         "mailValidation": "Type correct mail address!",
         "firstNameValidation": "Type your name!",
-        "lastNameValidation": "Type your last name!"
+        "lastNameValidation": "Type your last name!",
+        "noPermission": "You have no permission to do this!"
     },
     "messages":{
         "productAdded": "Product added.",

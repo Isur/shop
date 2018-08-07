@@ -1,7 +1,6 @@
 import React from 'react';
 import { Segment, Container, Button, Form, Input, Divider, Message } from 'semantic-ui-react';
 import axios from 'axios';
-import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 // language
 import lang from './language/lang';

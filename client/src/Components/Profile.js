@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Card, Button, Segment, Form } from 'semantic-ui-react';
+import { Card, Button, Segment, Form } from 'semantic-ui-react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 

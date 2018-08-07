@@ -1,8 +1,9 @@
 import React from 'react';
-import { Message, Card, Icon, Image, Grid , Segment, Button} from 'semantic-ui-react';
+import { Card, Icon, Grid , Segment, Button} from 'semantic-ui-react';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import Loading from './Loading';
+import lang from './language/lang';
 
 const Item = (props) => {
     return(
@@ -22,6 +23,7 @@ const Item = (props) => {
                         <Icon name="delete"/>
                     </Button>}
                     {props.id === cookie.load('id') && <Button positive disabled> To Ty </Button>}
+                    <Button onClick={() => props.changePermission(props.id,"addProducts", !props.permissions.addProducts)} negative={!props.permissions.addProducts} positive={props.permissions.addProducts}> {lang.buttons.addProductPermission} </Button>
                 </Card.Content>
             </Card>
         </Grid.Column>
@@ -73,6 +75,23 @@ deleteUser = (id) => {
         });
     })
 }
+
+changePermission = (id, permission, bool) => {
+    this.setState({loading: true});
+    axios({
+        method: 'post',
+        url: `user/permissions/${id}`,
+        headers: {'Authorization' : cookie.load('token')},
+        data: {
+            permission: permission,
+            bool: bool
+        }
+    }).then(res => {
+        this.getUsers().then(res => {
+            this.setState({users: res, loading: false});
+        });
+    })
+}
     render(){
         return(
             <Segment inverted>
@@ -88,6 +107,8 @@ deleteUser = (id) => {
                             login={user.login}
                             type={user.type}
                             delete={this.deleteUser}
+                            permissions={user.permissions}
+                            changePermission={this.changePermission}
                         />
                     ))}
                 </Grid>

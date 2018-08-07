@@ -51,6 +51,7 @@ class AddNewItem extends React.Component{
 
    componentDidMount(){
     this.isError();
+
    }
     
 
@@ -167,12 +168,18 @@ class AddNewItem extends React.Component{
                             value: this.state.value,
                             producer: this.state.producer,
                             imageLink: this.state.image,
-                            itemType: this.state.type
+                            itemType: this.state.type,
+                            id: cookie.load('id')
                         },
                         headers: {'Authorization' : cookie.load('token')}
                     }).then(res => {
+                        if(res.data.code === 403){
+                            console.log(res.data.code)
+                            this.setState({sent:false, sending: false, error: true, errorMessage:`${lang.errors.noPermission}` });
+                        }else {
+                            this.setState({sent:true, sending: false});
+                        }
                         this.clearForm(); 
-                        this.setState({sent:true, sending: false})
                     }).catch(err => {
                         this.setState({sending: false, errorMessage: lang.errors.logIn, error: true })
                     });

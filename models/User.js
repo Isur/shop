@@ -28,6 +28,12 @@ const User = new Schema({
         type: String,
         required: true
     },
+    permissions: {
+        addProducts: {
+            type: Boolean,
+            required: true,
+        }
+    },
     salt: String
 });
 

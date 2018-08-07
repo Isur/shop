@@ -6,9 +6,7 @@ import { Redirect } from 'react-router';
 import lang from './language/lang';
 
 class Logout extends React.Component{
-    constructor(props){
-        super(props);
-    }
+    
     componentDidMount(){
         this.props.logout();
     }
