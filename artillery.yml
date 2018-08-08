@@ -1,0 +1,10 @@
+config:
+  target: 'http://localhost:5000/products/search/all?page=1&sort=value'
+  phases:
+    - duration: 60
+      arrivalRate: 20
+  defaults:
+scenarios:
+  - flow:
+    - get:
+        url: "/docs"

@@ -4,12 +4,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const jwt = require('jsonwebtoken');
 const exjwt = require('express-jwt');
 
 const app = express();
-
+app.use(helmet());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
   res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
