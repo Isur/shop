@@ -8,8 +8,6 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const exjwt = require('express-jwt');
 
-
-
 const app = express();
 
 app.use((req, res, next) => {
@@ -48,7 +46,6 @@ app.use(function (err, req, res, next) {
       next(err);
   }
 });
-
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -22,3 +22,12 @@ it('should list ALL products on /products/all GET', function(done) {
         done();
       });
   });
+
+  it('should not allow not logged users on user/all/', (done ) => {
+    chai.request(server)
+      .get('/user/all')
+      .end((err, res) => {
+        res.should.have.status(401);
+        done();
+      });
+  });
