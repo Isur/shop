@@ -20,8 +20,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
-const db = require('./config/keys').mongoURL;
+if(process.env.NODE_ENV === 'production')
+  const db = require('./config/keys').mongoURL_prod;
+else
+  const db = require('./config/keys').mongoURL;
 
 mongoose.connect(db)
   .then(() => console.log("MongoDB Connected"))
