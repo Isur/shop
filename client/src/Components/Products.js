@@ -94,14 +94,14 @@ class Products extends ReactQueryParams{
       clearInput = () => {
         this.setState({search: ''});
       }
-      search = (event) => {
+
+      sort = (event, data) => {
         this.setState({
-          search: event.target.value,
+          sort: data.value,
           page: 1,
-          route: "products",
-        }, async () =>{
+        },async () => {
           this.getItems();
-        })
+        });
       }
     
     previousPage = () => {
