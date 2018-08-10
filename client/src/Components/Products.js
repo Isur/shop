@@ -130,7 +130,6 @@ class Products extends ReactQueryParams{
     }
 
     deleteItem = (id) => {
-      console.log(`to delete: ${id}`);
       this.setState({
         items: this.state.items.filter(el => el._id !== id)
       })

@@ -2,9 +2,12 @@ import React from 'react';
 import { Message, Card, Icon, Image, Grid , Segment, Button} from 'semantic-ui-react';
 import image from '../images/placeholder-avatar.jpg';
 import { Link } from 'react-router-dom';
+import cookie from 'react-cookies';
 
 // language
 import lang from './language/lang';
+import axios from 'axios';
+import { resolve } from 'path';
 
 const Item = (props) => {
     return(
@@ -26,20 +29,50 @@ const Item = (props) => {
                     <p style={{color: "silver", fontWeight: "bolder"}}>
                         {props.type}
                     </p>
-                    <Button color="red" icon onClick={() => props.deleteItem(props.id)}>
+                    { cookie.load('token') && props.user.permissions.addProducts === true &&  <Button color="red" icon onClick={() => props.deleteItem(props.id)}>
                         <Icon name="delete"/>
-                    </Button>
+                    </Button>}
                 </Card.Content>
             </Card>
         </Grid.Column>
     );
 }
 
-const Items = (props) => {
+class Items extends React.Component{
+constructor(props){
+    super(props);
+    this.state = props;
+    this.deleteItem = props.deleteItem;
+}
+
+componentDidMount(){
+    this.setState({
+        user: {},
+        loading: true
+    });
+    this.getUsers().then(res => this.setState({user:res, loading: false})).catch(res => this.setState({loading: false}));
+}
+
+
+    getUsers = () => {
+        return new Promise((resolve, reject) => {
+            axios({
+                method: 'get',
+                url: `/user/user/${cookie.load('id')}`,
+                headers: {
+                    'Authorization': cookie.load('token')
+                }
+            })
+            .then(user => resolve(user.data))
+            .catch(err => reject({"success": false}));
+        })
+    }
+render(){
+    console.log(this.state.user);
     return(
         <Segment inverted>
             <Grid stackable  divided className="ui center aligned grid">
-                {props.items && props.items.length > 0 && props.items.map(({name,producer,value,description, _id,imageLink,itemType}) => (
+                {this.state.loading === false && this.state.items && this.state.items.length > 0 && this.state.items.map(({name,producer,value,description, _id,imageLink,itemType}) => (
                     <Item 
                         key={_id} 
                         id={_id}
@@ -49,14 +82,16 @@ const Items = (props) => {
                         description={description} 
                         image={imageLink}
                         type={itemType}
-                        deleteItem={props.deleteItem}
+                        deleteItem={this.deleteItem}
+                        user={this.state.user}
                     />
                 ))}
             </Grid>
-                    {(!props.items || props.items.length === 0) && 
+                    {(!this.state.items || this.state.items.length === 0) && 
                     <Message size="massive"> {lang.errors.noProducts} </Message>}
         </Segment>
     );
+}
 }
 
 export default Items;

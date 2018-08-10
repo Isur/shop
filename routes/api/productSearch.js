@@ -119,7 +119,6 @@ router.get('/search/:cat/', (req,res)=>{
             }
         }
 // for pagination to get total number of htis;
-        console.log(type);
         Item.esSearch({
             sort,
             query:{
@@ -143,9 +142,6 @@ router.get('/search/:cat/', (req,res)=>{
             console.log(err);
             Item.esSearch(search ,(err,result)=>{
                 totalHits = respon.hits.total;
-                console.log(search);
-                console.log(`error: ${err}`);
-                console.log(result);
                 var hits = result.hits.hits;
                 if(hits.length < 1){
                     hits = [];
