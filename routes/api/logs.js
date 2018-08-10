@@ -13,8 +13,10 @@ const jwtMW = exjwt({
     const decoded = jwt.decode(token);
     console.log(decoded);
     if(decoded.type === 'admin'){
-        var contents = fs.readFileSync('logs/error.log', 'utf8');
-        res.json(contents);
+        fs.readFile('logs/error.log', 'utf8', (err, data) => {
+            if(err)  res.json({success: false, message: err});
+            res.json(data);
+        });
     }
     else 
         res.json({success: false, message: "You are not admin!"});
