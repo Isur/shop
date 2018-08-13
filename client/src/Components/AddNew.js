@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 // language
 import lang from './language/lang';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://alm-shop.herokuapp.com');
 
 const style = {
     color: 'silver',

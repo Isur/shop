@@ -14,7 +14,7 @@ import io from 'socket.io-client';
 import './App.css';
 import lang from './Components/language/lang';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://alm-shop.herokuapp.com');
 
 class App extends React.Component {
 
