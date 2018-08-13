@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-
+const socket = require('socket.io');
 const jwt = require('jsonwebtoken');
 const exjwt = require('express-jwt');
 
@@ -59,6 +59,19 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
+const server = app.listen(port, () => console.log(`Server started on port ${port}`));
+
+const io = socket(server);
+io.on('connection', (socket) => {
+  console.log('connection with ', socket.id);
+  socket.on('test', (data) => {
+    io.emit('test', (data));
+  })
+
+  socket.on('addProduct', (data) => {
+   socket.broadcast.emit('addProduct', {message:data.message});
+  })
+})
+
 
 module.exports = app;

@@ -4,10 +4,11 @@ import axios from 'axios';
 import Loading from './Loading';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
-
+import io from 'socket.io-client';
 // language
 import lang from './language/lang';
 
+const socket = io('http://localhost:5000');
 
 const style = {
     color: 'silver',
@@ -178,6 +179,7 @@ class AddNewItem extends React.Component{
                             this.setState({sent:false, sending: false, error: true, errorMessage:`${lang.errors.noPermission}` });
                         }else {
                             this.setState({sent:true, sending: false});
+                            socket.emit('addProduct', {message:`Produkt ${this.state.name} został dodany`});
                         }
                         this.clearForm(); 
                     }).catch(err => {

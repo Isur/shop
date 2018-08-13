@@ -9,10 +9,12 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import io from 'socket.io-client';
 // images, css
 import './App.css';
 import lang from './Components/language/lang';
 
+const socket = io('http://localhost:5000');
 
 class App extends React.Component {
 
@@ -25,6 +27,9 @@ class App extends React.Component {
   }
   
   componentDidMount(){
+    socket.on('addProduct', (data) => {
+      this.notify(data.message);
+    })
     cookie.load('token')
     cookie.load('id');
     this.isLogged();
